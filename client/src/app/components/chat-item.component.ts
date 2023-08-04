@@ -3,7 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'chat-item',
   template: `
-    <div class="flex items-center gap-3">
+    <div
+      class="flex items-center gap-3 py-5 px-2 rounded-lg cursor-pointer hover:bg-lightDark select-none"
+    >
       <img src="/assets/user.jpg" alt="user" class="w-28 rounded-xl" />
       <div class="flex flex-col gap-1">
         <p>Ken Adams</p>
@@ -14,6 +16,5 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
-  styles: [],
 })
 export class ChatItemComponent {}

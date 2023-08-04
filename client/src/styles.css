@@ -11,3 +11,13 @@
   overflow: hidden;
   font-family: "Poppins", sans-serif;
 }
+
+::-webkit-scrollbar {
+  @apply w-[5px] bg-[#0b1120];
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-200 dark:bg-[#0B1120];
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-xl bg-gray-600 dark:bg-slate-700;
+}
