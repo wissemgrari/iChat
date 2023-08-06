@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'chat-header',
   template: `
     <div
-      class="bg-lightDark w-full absolute left-0 top-0 py-3 flex flex-col gap-y-2 items-center justify-center"
+      class="bg-lightDark w-full py-3 flex flex-col gap-y-2 items-center justify-center"
     >
       <img
         src="/assets/user.jpg"
@@ -13,7 +13,9 @@ import { Component } from '@angular/core';
       />
       <span class="text-white text-lg font-medium">John Doe</span>
 
-      <div class="absolute left-3 w-8 p-2 rounded-full hover:bg-grey/30">
+      <div
+        class="absolute left-3 w-8 p-2 rounded-full hover:bg-grey/30 flex justify-center items-center cursor-pointer"
+      >
         <img class="rotate-180" src="/assets/chevron.svg" alt="chevron-icon" />
       </div>
     </div>

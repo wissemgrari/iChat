@@ -8,16 +8,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: scroll;
+  overflow-x: hidden;
   font-family: "Poppins", sans-serif;
 }
 
 ::-webkit-scrollbar {
-  @apply w-[5px] bg-[#0b1120];
-}
-::-webkit-scrollbar-track {
-  @apply bg-slate-200 dark:bg-[#0B1120];
-}
-::-webkit-scrollbar-thumb {
-  @apply rounded-xl bg-gray-600 dark:bg-slate-700;
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
