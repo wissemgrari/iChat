@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'chat-item',
   template: `
     <div
-      class="flex items-center gap-3 py-5 px-2 rounded-lg cursor-pointer hover:bg-lightDark select-none"
+      class="flex items-center gap-3 py-5 px-2 rounded-lg cursor-pointer hover:bg-lightDark select-none transition duration-300"
     >
       <img src="/assets/user.jpg" alt="user" class="w-28 rounded-xl" />
       <div class="flex flex-col gap-1">
