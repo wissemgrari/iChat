@@ -1,4 +1,4 @@
-package com.wissem.chatapi;
+package com.wissem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

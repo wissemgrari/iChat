@@ -1,4 +1,4 @@
-package com.wissem.chatapi.chat;
+package com.wissem.chat;
 
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,10 +1,10 @@
-package com.wissem.chatapi.message;
+package com.wissem.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MessageController {
+public class ChatController {
     @Autowired
-    private MessageService messageService;
+    private ChatRepository chatRepository;
 }

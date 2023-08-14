@@ -1,10 +1,15 @@
-package com.wissem.chatapi.chat;
-import jakarta.persistence.*;
+package com.wissem.chat;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "chats")
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private int id;
     private int[] participants;
 

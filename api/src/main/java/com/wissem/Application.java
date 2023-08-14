@@ -1,13 +1,13 @@
-package com.wissem.chatapi;
+package com.wissem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChatApiApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(ChatApiApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }

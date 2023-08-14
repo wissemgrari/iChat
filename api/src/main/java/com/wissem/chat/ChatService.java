@@ -1,4 +1,4 @@
-package com.wissem.chatapi.chat;
+package com.wissem.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

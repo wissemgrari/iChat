@@ -1,4 +1,4 @@
-package com.wissem.chatapi.message;
+package com.wissem.message;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
