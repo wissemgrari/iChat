@@ -8,7 +8,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     public void createUser() {
-        User user = new User("wissem", "grari", "grariwissem@gmail.com");
+        User user = new User(1, "wissem", "grari", "grariwissem@gmail.com", "password");
         userRepository.save(user);
     }
 }
