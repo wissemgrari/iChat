@@ -1,5 +1,6 @@
 package com.wissem.config;
 
+import com.wissem.user.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
