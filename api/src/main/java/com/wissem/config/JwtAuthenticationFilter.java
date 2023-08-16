@@ -34,7 +34,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final String jwt;
     final String username;
     if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-      filterChain.doFilter(request, response);
+      // If request URL matches the non-authenticated path, allow it
+      if (isNonAuthenticatedPath(request)) {
+        filterChain.doFilter(request, response);
+        return;
+      }
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().write("Token is missing or invalid");
       return;
     }
     jwt = authHeader.substring(7);
@@ -54,5 +60,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       }
     }
     filterChain.doFilter(request, response);
+  }
+  private boolean isNonAuthenticatedPath(HttpServletRequest request) {
+    // Define your non-authenticated paths here
+    String path = request.getServletPath();
+    return path.startsWith("/api/v1/auth/");
   }
 }
