@@ -66,11 +66,12 @@ public class ChatService {
         .findByEmail(username)
         .orElseThrow(() -> new UserNotFoundException("No user associated with this email address: " + username));
       // check if the user have an existing chats
-      List<Chat> chats = chatRepository.findByUserIdInParticipants(user.getId());
+      List<Chat> chats = chatRepository.findByUserIdInChat(user.getId());
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(chats);
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
         .body(null);

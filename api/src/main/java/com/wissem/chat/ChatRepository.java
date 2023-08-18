@@ -2,7 +2,6 @@ package com.wissem.chat;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,7 +11,9 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
   @Query(
     nativeQuery = true,
-    value = "SELECT * FROM chats c JOIN users u ON u.id IN c.participants;"
+    value = "SELECT c.* FROM chats c JOIN users u ON u.id = ANY(c.participants) WHERE u.id = :userId"
   )
-  List<Chat> findByUserIdInParticipants(@Param("userId") Integer userId);
+  List<Chat> findByUserIdInChat(Integer userId);
+
+
 }
