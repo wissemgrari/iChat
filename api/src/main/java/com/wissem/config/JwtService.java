@@ -1,6 +1,5 @@
 package com.wissem.config;
 
-import com.wissem.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,12 +13,16 @@ import java.util.Map;
 import java.util.function.Function;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-  private static final String SECRET_KEY = "A6CEA12A78436F916F4C5E772DE55EA0FCE148CA8AC4F1EF72F5F1B69058E85F";
+
+  @Value("${env.JWT_SECRET_KEY}")
+  private String secretKey;
+
 
   public String getTokenFromHeader(HttpServletRequest request) {
     String authorizationHeader = request.getHeader("Authorization");
@@ -49,7 +52,7 @@ public class JwtService {
   }
 
   private Key getSignInKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+    byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
