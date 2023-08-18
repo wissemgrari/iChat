@@ -1,9 +1,6 @@
 package com.wissem.chat;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +15,9 @@ import java.util.List;
 @Data
 @Builder
 public class Chat {
-    @Id
-    @GeneratedValue
-    private Integer id;
-    private List<Integer> participants;
+  @Id
+  @GeneratedValue
+  private Integer id;
+
+  private List<Integer> participants;
 }
