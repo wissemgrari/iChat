@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,11 +36,11 @@ public class JwtService {
 
   public Claims extractAllClaims(String jwt) {
     return Jwts
-        .parserBuilder()
-        .setSigningKey(getSignInKey())
-        .build()
-        .parseClaimsJws(jwt)
-        .getBody();
+      .parserBuilder()
+      .setSigningKey(getSignInKey())
+      .build()
+      .parseClaimsJws(jwt)
+      .getBody();
   }
 
   public <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {
@@ -54,13 +55,13 @@ public class JwtService {
 
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
     return Jwts
-        .builder()
-        .setClaims(extraClaims)
-        .setSubject(userDetails.getUsername())
-        .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-        .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-        .compact();
+      .builder()
+      .setClaims(extraClaims)
+      .setSubject(userDetails.getUsername())
+      .setIssuedAt(new Date(System.currentTimeMillis()))
+      .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+      .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+      .compact();
   }
 
   public String generateToken(UserDetails userDetails) {
