@@ -25,61 +25,61 @@ public class AuthenticationService {
     try {
       if (userRepository.existsByEmail(request.getEmail())) {
         return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(AuthenticationResponse.builder()
-                .error("Email already in use")
-                .build());
+          .status(HttpStatus.BAD_REQUEST)
+          .body(AuthenticationResponse.builder()
+            .error("Email already in use")
+            .build());
       }
 
-      var user = User.builder()
-          .firstName(request.getFirstname())
-          .lastName(request.getLastname())
-          .email(request.getEmail())
-          .password(passwordEncoder.encode(request.getPassword()))
-          .build();
+      User user = new User(
+        request.getFirstname(),
+        request.getLastname(),
+        request.getEmail(),
+        passwordEncoder.encode(request.getPassword())
+      );
       userRepository.save(user);
 
       var token = jwtService.generateToken(user);
       return ResponseEntity
-          .status(HttpStatus.CREATED)
-          .body(AuthenticationResponse.builder()
-              .token(token)
-              .build());
+        .status(HttpStatus.CREATED)
+        .body(AuthenticationResponse.builder()
+          .token(token)
+          .build());
     } catch (Exception e) {
       return ResponseEntity
-          .status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(AuthenticationResponse.builder()
-              .error("An error occurred during registration")
-              .build());
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(AuthenticationResponse.builder()
+          .error("An error occurred during registration")
+          .build());
     }
   }
 
 
   public ResponseEntity<AuthenticationResponse> login(LoginRequest request) {
-   try {
+    try {
 
-     authManager.authenticate(
-         new UsernamePasswordAuthenticationToken(
-             request.getEmail(),
-             request.getPassword()
-         )
-     );
-     var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-     var token = jwtService.generateToken(user);
+      authManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+          request.getEmail(),
+          request.getPassword()
+        )
+      );
+      var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+      var token = jwtService.generateToken(user);
 
-     return ResponseEntity
-         .status(HttpStatus.OK)
-         .body(AuthenticationResponse.builder()
-             .token(token)
-             .build());
-   } catch(BadCredentialsException e) {
-     return ResponseEntity
-         .status(HttpStatus.OK)
-         .body(AuthenticationResponse.builder()
-             .error("Invalid email or password")
-             .build()
-         );
-   }
+      return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(AuthenticationResponse.builder()
+          .token(token)
+          .build());
+    } catch (BadCredentialsException e) {
+      return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(AuthenticationResponse.builder()
+          .error("Invalid email or password")
+          .build()
+        );
+    }
   }
 
 }

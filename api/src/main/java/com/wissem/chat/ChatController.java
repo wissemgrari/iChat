@@ -14,9 +14,9 @@ public class ChatController {
 
   private final ChatService chatService;
 
-  @PostMapping("/{participantId}")
-  public ChatResponse create(HttpServletRequest request, @PathVariable String participantId) {
-    return chatService.create(request, participantId).getBody();
+  @PostMapping("/{userId}")
+  public ChatResponse create(HttpServletRequest request, @PathVariable String userId) {
+    return chatService.create(request, userId).getBody();
   }
 
   @GetMapping

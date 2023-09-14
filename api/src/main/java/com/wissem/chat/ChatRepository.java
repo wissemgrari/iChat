@@ -1,19 +1,21 @@
 package com.wissem.chat;
 
+import com.wissem.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ChatRepository extends JpaRepository<Chat, Integer> {
-  @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Chat c WHERE c.participants = :participants")
-  boolean existsByParticipants(List<Integer> participants);
+public interface ChatRepository extends JpaRepository<Chat, Long> {
+  @Query("SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END " +
+    "FROM Chat c " +
+    "JOIN c.userChats uc " +
+    "WHERE (uc.user = :user AND uc.participant = :participant) OR (uc.user = :participant AND uc.participant = :user)")
+  boolean existsChatByUsers(User user, User participant);
 
-  @Query(
-    nativeQuery = true,
-    value = "SELECT c.* FROM chats c JOIN users u ON u.id = ANY(c.participants) WHERE u.id = :userId"
-  )
-  List<Chat> findByUserIdInChat(Integer userId);
-
+  @Query("SELECT DISTINCT c FROM Chat c " +
+    "INNER JOIN c.userChats uc " +
+    "WHERE :user IN (uc.user, uc.participant)")
+  List<Chat> findChatsByUser(User user);
 
 }

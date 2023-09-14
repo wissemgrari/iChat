@@ -1,8 +1,5 @@
-INSERT INTO chats (id, participants)
-VALUES (nextval('chats_seq'), ARRAY [1, 51]);
+INSERT INTO chats (id)
+VALUES (nextval('chat_sequence'));
 
-INSERT INTO chats (id, participants)
-VALUES (nextval('chats_seq'), ARRAY [1, 101]);
-
-INSERT INTO chats (id, participants)
-VALUES (nextval('chats_seq'), ARRAY [151, 101]);
+INSERT INTO user_chats (chat_id, participants)
+VALUES (currval('chat_sequence'), 2);

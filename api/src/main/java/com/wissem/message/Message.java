@@ -1,24 +1,77 @@
 package com.wissem.message;
 
+import com.wissem.chat.Chat;
+import com.wissem.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Builder
 public class Message {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private int senderId;
-    private int receiverId;
-    private String content;
-    private Date createdAt;
+
+  @Id
+  @SequenceGenerator(
+    name = "message_sequence",
+    sequenceName = "message_sequence",
+    allocationSize = 1
+  )
+  @GeneratedValue(
+    strategy = GenerationType.SEQUENCE,
+    generator = "message_sequence"
+  )
+  @Column(
+    name = "id",
+    updatable = false
+  )
+  private Long id;
+
+  @Column(
+    name = "content",
+    nullable = false,
+    columnDefinition = "TEXT"
+  )
+  private String content;
+
+  @Column(
+    name = "created_at",
+    nullable = false,
+    columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
+  )
+  private LocalDateTime createdAt;
+
+  @Enumerated(EnumType.STRING)
+  @Column(
+    name = "status",
+    nullable = false
+  )
+  private MessageStaus status;
+
+  @ManyToOne
+  @JoinColumn(
+    name = "user_id",
+    nullable = false,
+    referencedColumnName = "id",
+    foreignKey = @ForeignKey(name = "user_message_fk")
+  )
+  private User user;
+
+  @ManyToOne
+  @JoinColumn(
+    name = "chat_id",
+    nullable = false,
+    referencedColumnName = "id",
+    foreignKey = @ForeignKey(name = "chat_message_fk")
+  )
+  private Chat chat;
+
+  public Message(String content, LocalDateTime createdAt, MessageStaus status) {
+    this.content = content;
+    this.createdAt = createdAt;
+    this.status = status;
+  }
 }

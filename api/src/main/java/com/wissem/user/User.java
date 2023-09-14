@@ -1,66 +1,122 @@
 package com.wissem.user;
 
+import com.wissem.chat.Chat;
+import com.wissem.message.Message;
+import com.wissem.user_chat.UserChat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import java.util.*;
 
-@Entity
-@Table(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
-@Builder
+@Getter
+@Setter
+@Entity
+@Table(
+  name = "users",
+  uniqueConstraints = {
+    @UniqueConstraint(name = "user_email_unique", columnNames = "email")
+  }
+)
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue
-    private Integer id;
+  @Id
+  @SequenceGenerator(
+    name = "user_sequence",
+    sequenceName = "user_sequence",
+    allocationSize = 1
+  )
+  @GeneratedValue(
+    strategy = GenerationType.SEQUENCE,
+    generator = "user_sequence"
+  )
+  @Column(
+    name = "id",
+    updatable = false
+  )
+  private Long id;
 
-    private String firstName;
-    private String lastName;
+  @Column(
+    name = "first_name",
+    nullable = false,
+    columnDefinition = "TEXT"
+  )
+  private String firstName;
 
-    @Column(unique=true, nullable=false)
-    private String email;
+  @Column(
+    name = "last_name",
+    nullable = false,
+    columnDefinition = "TEXT"
+  )
+  private String lastName;
 
-    private String password;
+  @Column(
+    name = "email",
+    nullable = false,
+    columnDefinition = "TEXT"
+  )
+  private String email;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+  @Column(
+    name = "password",
+    nullable = false,
+    columnDefinition = "TEXT"
+  )
+  private String password;
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+  @OneToMany(
+    cascade = CascadeType.ALL,
+    orphanRemoval = true,
+    mappedBy = "user"
+  )
+  private List<Message> messages = new ArrayList<>();
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
+  @OneToMany(
+    cascade = CascadeType.ALL,
+    mappedBy = "user"
+  )
+  private List<UserChat> userChats = new ArrayList<>();
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  public User(String firstName, String lastName, String email, String password) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.password = password;
+  }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @Override
+  public String getPassword() {
+    return password;
+  }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+  @Override
+  public String getUsername() {
+    return email;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }

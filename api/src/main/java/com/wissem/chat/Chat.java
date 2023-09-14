@@ -1,23 +1,58 @@
 package com.wissem.chat;
 
+import com.wissem.message.Message;
+import com.wissem.user.User;
+import com.wissem.user_chat.UserChat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "chats")
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
-@Builder
+@Getter
+@Setter
 public class Chat {
-  @Id
-  @GeneratedValue
-  private Integer id;
 
-  private List<Integer> participants;
+  @Id
+  @SequenceGenerator(
+    name = "chat_sequence",
+    sequenceName = "chat_sequence",
+    allocationSize = 1
+  )
+  @GeneratedValue(
+    strategy = GenerationType.SEQUENCE,
+    generator = "chat_sequence"
+  )
+  @Column(
+    name = "id",
+    updatable = false
+  )
+  private Long id;
+
+  @Column(
+    name = "created_at",
+    nullable = false,
+    columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
+  )
+  private LocalDateTime createdAt = LocalDateTime.now();
+
+  @OneToMany(
+    cascade = CascadeType.ALL,
+    orphanRemoval = true,
+    mappedBy = "chat"
+  )
+  private List<Message> messages = new ArrayList<>();
+
+  @OneToMany(
+    mappedBy = "chat",
+    cascade = CascadeType.ALL
+  )
+  private List<UserChat> userChats = new ArrayList<>();
+
 }
