@@ -10,8 +10,8 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
   @Query("SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END " +
     "FROM Chat c " +
     "JOIN c.userChats uc " +
-    "WHERE (uc.user = :user AND uc.participant = :participant) OR (uc.user = :participant AND uc.participant = :user)")
-  boolean existsChatByUsers(User user, User participant);
+    "WHERE (uc.user.id = :userId AND uc.participant = :participantId) OR (uc.user.id = :participantId AND uc.participant = :userId)")
+  boolean existsChatByUsers(Long userId, Long participantId);
 
   @Query("SELECT DISTINCT c FROM Chat c " +
     "INNER JOIN c.userChats uc " +

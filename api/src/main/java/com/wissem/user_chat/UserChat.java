@@ -23,7 +23,8 @@ public class UserChat {
   @JoinColumn(
     name = "chat_id",
     nullable = false,
-    referencedColumnName = "id"
+    referencedColumnName = "id",
+    foreignKey = @ForeignKey(name = "chat_id_fk")
   )
   @JsonIgnore
   private Chat chat;
@@ -33,7 +34,8 @@ public class UserChat {
   @JoinColumn(
     name = "user_id",
     nullable = false,
-    referencedColumnName = "id"
+    referencedColumnName = "id",
+    foreignKey = @ForeignKey(name = "user_id_fk")
   )
   @JsonIgnore
   private User user;

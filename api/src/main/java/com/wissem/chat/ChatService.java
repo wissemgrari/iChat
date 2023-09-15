@@ -44,12 +44,12 @@ public class ChatService {
         .findByEmail(username)
         .orElseThrow(() -> new UsernameNotFoundException("No user associated with this email address: " + username));
 
-//      check if there's an existing chat with the user
-//      if (chatRepository.existsChatByUsers(user, participant)) {
-//        return ResponseEntity
-//          .status(HttpStatus.BAD_REQUEST)
-//          .body(ChatResponse.builder().error("The chat is already exist").build());
-//      }
+      // check if there's an existing chat with the user
+      if (chatRepository.existsChatByUsers(user.getId(), participant.getId())) {
+        return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .body(ChatResponse.builder().error("The chat is already exist").build());
+      }
 
       Chat newChat = chatRepository.save(new Chat());
 

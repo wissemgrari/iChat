@@ -1,48 +1,50 @@
 -- -- Create the users table
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE users
 (
-    id         BIGSERIAL NOT NULL PRIMARY KEY,
-    email      TEXT      NOT NULL
-        CONSTRAINT user_email_unique UNIQUE,
-    first_name TEXT      NOT NULL,
-    last_name  TEXT      NOT NULL,
-    password   TEXT      NOT NULL
+    id         BIGINT NOT NULL PRIMARY KEY,
+    email      TEXT   NOT NULL
+        CONSTRAINT user_email_unique
+            UNIQUE,
+    first_name TEXT   NOT NULL,
+    last_name  TEXT   NOT NULL,
+    password   TEXT   NOT NULL
 );
 
 -- Create the chats table
-CREATE TABLE IF NOT EXISTS chats
+CREATE TABLE chats
 (
-    id BIGSERIAL NOT NULL PRIMARY KEY
+    id         BIGINT                      NOT NULL PRIMARY KEY,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
+
 
 -- Create the messages table
-CREATE TABLE IF NOT EXISTS messages
+CREATE TABLE messages
 (
-    id         BIGSERIAL PRIMARY KEY NOT NULL,
-    user_id    BIGINT                NOT NULL
+    id         BIGINT                      NOT NULL PRIMARY KEY,
+    chat_id    BIGINT                      NOT NULL
+        CONSTRAINT chat_message_fk
+            REFERENCES chats,
+    user_id    BIGINT                      NOT NULL
         CONSTRAINT user_message_fk
             REFERENCES users,
-    content    TEXT                  NOT NULL,
-    created_at TIMESTAMP             NOT NULL
+    content    TEXT                        NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    status     VARCHAR(255)                NOT NULL
+        CONSTRAINT messages_status_check
+            CHECK ((status)::text = ANY ((ARRAY ['DELIVERED'::character varying, 'SEEN'::character varying])::text[]))
 );
 
 
-CREATE TABLE IF NOT EXISTS user_chats
+CREATE TABLE user_chat
 (
-    chat_id BIGINT NOT NULL
-        CONSTRAINT chats_user_id_fk
+    chat_id        BIGINT NOT NULL
+        CONSTRAINT chat_id_fk
             REFERENCES chats,
-    user_id BIGINT NOT NULL
-        CONSTRAINT user_chats_id_fk
-            REFERENCES users
-);
-
-CREATE TABLE IF NOT EXISTS chat_messages
-(
-    chat_id    BIGINT NOT NULL
-        CONSTRAINT chat_messages_id_fk
-            REFERENCES chats,
-    message_id BIGINT NOT NULL
-        CONSTRAINT message_chats_id_fk
-            REFERENCES messages
+    user_id        BIGINT NOT NULL
+        CONSTRAINT user_id_fk
+            REFERENCES users,
+    participant_id BIGINT NOT NULL,
+    CONSTRAINT user_chat_pkey
+        PRIMARY KEY (chat_id, user_id)
 );
