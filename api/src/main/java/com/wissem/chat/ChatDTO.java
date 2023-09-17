@@ -1,10 +1,11 @@
 package com.wissem.chat;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public record ChatDTO(
   Long id,
   LocalDateTime createdAt,
-  Long participantId
+  Map<String, Long> users
 ) {
 }
