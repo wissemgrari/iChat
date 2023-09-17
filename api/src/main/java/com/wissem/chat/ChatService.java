@@ -3,6 +3,7 @@ package com.wissem.chat;
 import com.wissem.config.JwtService;
 import com.wissem.exception.UserNotFoundException;
 import com.wissem.user.User;
+import com.wissem.user.UserDTOMapper;
 import com.wissem.user.UserRepository;
 import com.wissem.user_chat.UserChat;
 import com.wissem.user_chat.UserChatId;
@@ -13,12 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +25,8 @@ public class ChatService {
   private final ChatRepository chatRepository;
   private final JwtService jwtService;
   private final UserRepository userRepository;
+  private final UserDTOMapper userDTOMapper;
+  private final ChatDTOMapper chatDTOMapper;
 
   // Create Chat
   public ResponseEntity<ChatResponse> create(HttpServletRequest request, String userId) {
@@ -66,7 +66,9 @@ public class ChatService {
 
       return ResponseEntity
         .status(HttpStatus.CREATED)
-        .body(ChatResponse.builder().chat_id(newChat.getId()).users(List.of(user, participant)).build());
+        .body(ChatResponse.builder()
+          .chat_id(newChat.getId())
+          .users(Stream.of(user, participant).map(userDTOMapper).collect(Collectors.toList())).build());
     } catch (Exception e) {
       return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
@@ -74,8 +76,8 @@ public class ChatService {
     }
   }
 
-  // Get all chats for the logged-in user
-  public ResponseEntity<List<Chat>> getAllChats(HttpServletRequest request) {
+  //   Get all chats for the logged-in user
+  public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     try {
       // extract the logged-in user from the token
       String token = jwtService.getTokenFromHeader(request);
@@ -89,7 +91,7 @@ public class ChatService {
       List<Chat> chats = chatRepository.findChatsByUser(user);
       return ResponseEntity
         .status(HttpStatus.OK)
-        .body(chats);
+        .body(chats.stream().map(chatDTOMapper).collect(Collectors.toList()));
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return ResponseEntity
@@ -97,4 +99,5 @@ public class ChatService {
         .body(null);
     }
   }
+
 }

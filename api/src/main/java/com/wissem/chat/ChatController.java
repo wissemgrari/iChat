@@ -20,7 +20,7 @@ public class ChatController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Chat>> getAllChats(HttpServletRequest request) {
+  public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     return chatService.getAllChats(request);
   }
 }

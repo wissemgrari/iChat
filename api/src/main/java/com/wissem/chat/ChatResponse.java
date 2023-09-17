@@ -1,6 +1,7 @@
 package com.wissem.chat;
 
 import com.wissem.user.User;
+import com.wissem.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ChatResponse {
   private Long chat_id;
-  private List<User> users;
+  private List<UserDTO> users;
   private String error;
 }
