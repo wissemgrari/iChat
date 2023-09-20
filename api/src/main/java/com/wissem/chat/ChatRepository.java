@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
   @Query("SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END " +
@@ -17,5 +18,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
     "INNER JOIN c.userChats uc " +
     "WHERE :user IN (uc.user, uc.participant)")
   List<Chat> findChatsByUser(User user);
+
+  Optional<Chat> findChatById(Long id);
 
 }

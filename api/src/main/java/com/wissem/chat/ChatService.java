@@ -34,7 +34,7 @@ public class ChatService {
 
       // check if there's a participant with the given id
       User participant = userRepository
-        .findById(Integer.parseInt(userId))
+        .findById(Long.parseLong(userId))
         .orElseThrow(() -> new UserNotFoundException("There's no user with such id: " + userId));
 
       // extract the logged-in user from the token

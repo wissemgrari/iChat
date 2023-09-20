@@ -42,14 +42,14 @@ public class Message {
     nullable = false,
     columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
   )
-  private LocalDateTime createdAt;
+  private LocalDateTime createdAt = LocalDateTime.now();
 
   @Enumerated(EnumType.STRING)
   @Column(
     name = "status",
     nullable = false
   )
-  private MessageStaus status;
+  private MessageStaus status = MessageStaus.DELIVERED;
 
   @ManyToOne
   @JoinColumn(
@@ -69,9 +69,7 @@ public class Message {
   )
   private Chat chat;
 
-  public Message(String content, LocalDateTime createdAt, MessageStaus status) {
+  public Message(String content) {
     this.content = content;
-    this.createdAt = createdAt;
-    this.status = status;
   }
 }
