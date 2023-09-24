@@ -23,4 +23,10 @@ public class ChatController {
   public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     return chatService.getAllChats(request);
   }
+
+  @DeleteMapping("/{chatId}")
+  public ResponseEntity<?> remove(@PathVariable String chatId) {
+    return chatService.remove(chatId);
+  }
+
 }

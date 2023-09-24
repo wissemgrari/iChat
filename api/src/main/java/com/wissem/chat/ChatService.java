@@ -1,6 +1,7 @@
 package com.wissem.chat;
 
 import com.wissem.config.JwtService;
+import com.wissem.exception.ChatNotFoundException;
 import com.wissem.exception.UserNotFoundException;
 import com.wissem.user.User;
 import com.wissem.user.UserDTOMapper;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -76,7 +78,7 @@ public class ChatService {
     }
   }
 
-  //   Get all chats for the logged-in user
+  // Get all chats for the logged-in user
   public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     try {
       // extract the logged-in user from the token
@@ -92,6 +94,28 @@ public class ChatService {
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(chats.stream().map(chatDTOMapper).collect(Collectors.toList()));
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(null);
+    }
+  }
+
+  // Remove chat
+  public ResponseEntity<?> remove(String chatId) {
+    try {
+
+      Long id = Long.parseLong(chatId);
+      Chat chat = chatRepository
+        .findChatById(id)
+        .orElseThrow(() -> new ChatNotFoundException("Unable to find the chat with the given id"));
+
+      chatRepository.delete(chat);
+      return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(Map.of("chat_id", id, "response", "chat " + id + " is removed"));
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return ResponseEntity
