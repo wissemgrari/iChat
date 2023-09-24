@@ -114,7 +114,7 @@ public class ChatService {
       chatRepository.delete(chat);
       return ResponseEntity
         .status(HttpStatus.OK)
-        .body(Map.of("chat_id", id, "response", "chat " + id + " is removed"));
+        .body(Map.of("chat_id", id, "message", "chat " + id + " is removed"));
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
