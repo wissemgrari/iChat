@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         secondary: variant === 'secondary'
       }"
       (click)="onClick()"
-      class="primary w-full font-medium px-5 py-3 rounded flex items-center justify-center gap-2"
+      class="primary w-full font-semibold px-5 py-3 rounded flex items-center justify-center gap-2"
     >
       <img class="w-6" src="{{ icon }}" alt="btn-icon" *ngIf="icon" />
       <span class="capitalize">{{ text }}</span>
