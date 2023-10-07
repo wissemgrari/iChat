@@ -115,7 +115,7 @@ public class ChatService {
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(Map.of("chat_id", id, "message", "chat " + id + " is removed"));
-
+²
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return ResponseEntity

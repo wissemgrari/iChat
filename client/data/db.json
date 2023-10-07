@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 0,
+      "firstName": "wissem",
+      "lastName": "grari",
+      "email": "grariwissem@gmail.com"
+    },
+    {
+      "id": 1,
+      "firstName": "john",
+      "lastName": "doe",
+      "email": "johndoe@gmail.com"
+    },
+    {
+      "id": 2,
+      "firstName": "bill",
+      "lastName": "gates",
+      "email": "billgates@gmail.com"
+    },
+    {
+      "id": 3,
+      "firstName": "elon",
+      "lastName": "musk",
+      "email": "elonmusk@gmail.com"
+    }
+  ]
+}
