@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'page-not-found',
+  selector: 'not-found',
   template: `
     <div
       class="py-10 text-white w-full h-full flex flex-col items-center justify-between"
@@ -19,4 +19,4 @@ import { Component } from '@angular/core';
     </div>
   `,
 })
-export class PageNotFound {}
+export class NotFound {}

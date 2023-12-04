@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import {
+  RouterModule,
+  provideRouter,
+  withComponentInputBinding,
+} from '@angular/router';
 import { routes } from './routes';
 
 import { AppComponent } from './app.component';
@@ -18,7 +22,7 @@ import { ChatHeaderComponent } from './components/chat-header.component';
 import { ChatMessagesComponent } from './components/chat-messages.component';
 import { ChatInputComponent } from './components/chat-input.component';
 import { ChatMessageComponent } from './components/chat-message.component';
-import { PageNotFound } from './components/pageNotFound.component';
+import { NotFound } from './pages/notfound/notfound.component';
 
 @NgModule({
   declarations: [
@@ -37,10 +41,10 @@ import { PageNotFound } from './components/pageNotFound.component';
     ChatMessagesComponent,
     ChatInputComponent,
     ChatMessageComponent,
-    PageNotFound,
+    NotFound,
   ],
   imports: [BrowserModule, RouterModule.forRoot(routes)],
-  providers: [],
+  providers: [provideRouter(routes, withComponentInputBinding())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

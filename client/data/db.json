@@ -4,25 +4,29 @@
       "id": 0,
       "firstName": "wissem",
       "lastName": "grari",
-      "email": "grariwissem@gmail.com"
+      "email": "grariwissem@gmail.com",
+      "imageURL": "https://avatars.githubusercontent.com/u/92159413?v=4"
     },
     {
       "id": 1,
       "firstName": "john",
       "lastName": "doe",
-      "email": "johndoe@gmail.com"
+      "email": "johndoe@gmail.com",
+      "imageURL": "https://xsgames.co/randomusers/assets/avatars/male/23.jpg"
     },
     {
       "id": 2,
-      "firstName": "bill",
-      "lastName": "gates",
-      "email": "billgates@gmail.com"
+      "firstName": "jean",
+      "lastName": "doe",
+      "email": "jeandoe@gmail.com",
+      "imageURL": "https://xsgames.co/randomusers/assets/avatars/female/20.jpg"
     },
     {
       "id": 3,
       "firstName": "elon",
       "lastName": "musk",
-      "email": "elonmusk@gmail.com"
+      "email": "elonmusk@gmail.com",
+      "imageURL": "https://futureoflife.org/wp-content/uploads/2020/08/elon_musk_royal_society.jpg"
     }
   ]
 }

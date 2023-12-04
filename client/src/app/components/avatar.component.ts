@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <div class="flex flex-col items-center gap-1">
       <img
         class="w-12 rounded-full border-2 border-light"
-        src="/assets/user.jpg"
+        src="https://xsgames.co/randomusers/assets/avatars/male/18.jpg"
         alt="avatar"
       />
     </div>

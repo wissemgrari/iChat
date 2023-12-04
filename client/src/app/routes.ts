@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
-import { PageNotFound } from './components/pageNotFound.component';
+import { LoginComponent } from './pages/login/login.component';
+import { NotFound } from './pages/notfound/notfound.component';
+import { ChatComponent } from './pages/chat/chat.component';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
   { path: '', component: HomeComponent },
-  { path: '**', component: PageNotFound },
+  { path: 'login', component: LoginComponent },
+  { path: 'chat/:id', component: ChatComponent },
+  { path: '**', component: NotFound },
 ];
