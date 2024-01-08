@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class ChatService {
   private final ChatDTOMapper chatDTOMapper;
 
   // Create Chat
+
   public ResponseEntity<ChatResponse> create(HttpServletRequest request, String userId) {
     try {
 
@@ -86,6 +88,7 @@ public class ChatService {
   }
 
   // Get all chats for the logged-in user
+  @Transactional
   public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     try {
       // extract the logged-in user from the token
@@ -97,7 +100,7 @@ public class ChatService {
       // check if the user have chats
       // IF YES: return them
       // IF NO: return null
-      List<Chat> chats = chatRepository.findChatsByUser(user);
+      List<Chat> chats = chatRepository.findChatsByUser(user.getId());
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(chats.stream().map(chatDTOMapper).collect(Collectors.toList()));
