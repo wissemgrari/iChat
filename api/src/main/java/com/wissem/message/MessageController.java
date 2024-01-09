@@ -12,7 +12,10 @@ public class MessageController {
 
   private final MessageService messageService;
 
-  @PostMapping("/{chatId}")
+  // @desc    Send a message
+  // @route   POST /api/v1/messages/send/:chatID
+  // @access  Private
+  @PostMapping("/send/{chatId}")
   public ResponseEntity<MessageResponse> sendMessage(HttpServletRequest request, @PathVariable String chatId, @RequestBody Message message) {
     return messageService.sendMessage(request, chatId, message);
   }

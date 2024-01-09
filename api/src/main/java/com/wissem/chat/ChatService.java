@@ -31,63 +31,6 @@ public class ChatService {
   private final UserDTOMapper userDTOMapper;
   private final ChatDTOMapper chatDTOMapper;
 
-  // Create Chat
-
-  public ResponseEntity<ChatResponse> create(HttpServletRequest request, String userId) {
-    try {
-
-      // check if there's a participant with the given id
-      User participant = userRepository
-        .findById(Long.parseLong(userId))
-        .orElseThrow(() -> new UserNotFoundException("There's no user with such id: " + userId));
-
-      // extract the logged-in user from the token
-      String token = jwtService.getTokenFromHeader(request);
-      String username = jwtService.extractUsername(token);
-      User user = userRepository
-        .findByEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException("No user associated with this email address: " + username));
-
-      // check if there's an existing chat with the user
-      if (chatRepository.existsChatByUsers(user.getId(), participant.getId())) {
-        return ResponseEntity
-          .status(HttpStatus.BAD_REQUEST)
-          .body(ChatResponse.builder().error("The chat is already exist").build());
-      }
-
-      // prevent the user to create a chat with him-self
-      if(user.getId().equals(Long.parseLong(userId))) {
-        return ResponseEntity
-          .status(HttpStatus.CONFLICT)
-          .body(ChatResponse.builder().error("Unable to create a chat with yourself").build());
-      }
-
-      Chat newChat = chatRepository.save(new Chat());
-
-      UserChat newUserChat = new UserChat();
-      UserChatId userChatId = new UserChatId(newChat.getId(), user.getId());
-      newUserChat.setId(userChatId);
-      newUserChat.setUser(user);
-      newUserChat.setParticipant(participant.getId());
-      newUserChat.setChat(newChat);
-
-      user.getUserChats().add(newUserChat);
-
-      userRepository.save(user);
-
-      return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .body(ChatResponse.builder()
-          .chat_id(newChat.getId())
-          .users(Stream.of(user, participant).map(userDTOMapper).collect(Collectors.toList())).build());
-    } catch (Exception e) {
-      return ResponseEntity
-        .status(HttpStatus.BAD_REQUEST)
-        .body(ChatResponse.builder().error("something went wrong: " + e.getMessage()).build());
-    }
-  }
-
-  // Get all chats for the logged-in user
   @Transactional
   public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     try {
@@ -112,7 +55,60 @@ public class ChatService {
     }
   }
 
-  // Remove chat
+  public ResponseEntity<ChatResponse> create(HttpServletRequest request, Map<String, String> requestBody) {
+    try {
+
+      String userId = requestBody.get("userId");
+      // check if there's a participant with the given id
+      User participant = userRepository
+        .findById(Long.parseLong(userId))
+        .orElseThrow(() -> new UserNotFoundException("There's no user with such id: " + userId));
+
+      // extract the logged-in user from the token
+      String token = jwtService.getTokenFromHeader(request);
+      String username = jwtService.extractUsername(token);
+      User user = userRepository
+        .findByEmail(username)
+        .orElseThrow(() -> new UsernameNotFoundException("No user associated with this email address: " + username));
+
+      // check if there's an existing chat with the user
+      if (chatRepository.existsChatByUsers(user.getId(), participant.getId())) {
+        return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .body(ChatResponse.builder().error("The chat is already exist").build());
+      }
+
+      // prevent the user to create a chat with him-self
+      if (user.getId().equals(Long.parseLong(userId))) {
+        return ResponseEntity
+          .status(HttpStatus.CONFLICT)
+          .body(ChatResponse.builder().error("Unable to create a chat with yourself").build());
+      }
+
+      Chat newChat = chatRepository.save(new Chat());
+
+      UserChat newUserChat = new UserChat();
+      UserChatId userChatId = new UserChatId(newChat.getId(), user.getId());
+      newUserChat.setId(userChatId);
+      newUserChat.setUser(user);
+      newUserChat.setParticipant(participant.getId());
+      newUserChat.setChat(newChat);
+
+      user.getUserChats().add(newUserChat);
+      userRepository.save(user);
+
+      return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(ChatResponse.builder()
+          .chat_id(newChat.getId())
+          .users(Stream.of(user, participant).map(userDTOMapper).collect(Collectors.toList())).build());
+    } catch (Exception e) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(ChatResponse.builder().error("something went wrong: " + e.getMessage()).build());
+    }
+  }
+
   public ResponseEntity<?> remove(String chatId) {
     try {
 

@@ -68,13 +68,15 @@ public class User implements UserDetails {
   @OneToMany(
     cascade = CascadeType.ALL,
     orphanRemoval = true,
-    mappedBy = "user"
+    mappedBy = "user",
+    fetch = FetchType.EAGER
   )
   private List<Message> messages = new ArrayList<>();
 
   @OneToMany(
     cascade = CascadeType.ALL,
-    mappedBy = "user"
+    mappedBy = "user",
+    fetch = FetchType.EAGER
   )
   private List<UserChat> userChats = new ArrayList<>();
 
