@@ -26,6 +26,16 @@ public class AuthenticationService {
   private final AuthenticationManager authManager;
 
   public ResponseEntity<AuthenticationResponse> register(RegisterRequest request) {
+
+    // validation
+    if(request.getFirstname() == null || request.getLastname() == null || request.getEmail() == null || request.getPassword() == null) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(AuthenticationResponse.builder()
+          .error("All fields are required")
+          .build());
+    }
+
     try {
       if (userRepository.existsByEmail(request.getEmail())) {
         return ResponseEntity
@@ -52,7 +62,7 @@ public class AuthenticationService {
           .build());
     } catch (Exception e) {
       return ResponseEntity
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .status(HttpStatus.BAD_REQUEST)
         .body(AuthenticationResponse.builder()
           .error("An error occurred during registration")
           .build());
@@ -61,6 +71,16 @@ public class AuthenticationService {
 
 
   public ResponseEntity<AuthenticationResponse> login(LoginRequest request, HttpServletResponse response) {
+
+    // validation
+    if(request.getEmail() == null || request.getPassword() == null) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(AuthenticationResponse.builder()
+          .error("All fields are required")
+          .build());
+    }
+
     try {
       authManager.authenticate(
         new UsernamePasswordAuthenticationToken(
@@ -90,7 +110,7 @@ public class AuthenticationService {
 
     } catch (BadCredentialsException e) {
       return ResponseEntity
-        .status(HttpStatus.OK)
+        .status(HttpStatus.UNAUTHORIZED)
         .body(AuthenticationResponse.builder()
           .error("Invalid email or password")
           .build()
