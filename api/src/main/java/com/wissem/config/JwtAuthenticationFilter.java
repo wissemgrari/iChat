@@ -1,8 +1,8 @@
 package com.wissem.config;
 
-import com.wissem.user.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-// extends 'OncePerRequestFilter' so the class will be active everytime the user send a request
 @Component
-@RequiredArgsConstructor    // will create a constructor using the declared final fields
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter {  // extends 'OncePerRequestFilter' so the class will be active everytime the user send a request
 
   private final JwtService jwtService;
   private final UserDetailsService userDetailsService;
@@ -31,24 +30,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain
   ) throws ServletException, IOException {
-    final String authHeader = request.getHeader("Authorization");
-    final String jwt;
     final String username;
-    if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-      // If request URL matches the non-authenticated path, allow it
-      if (isNonAuthenticatedPath(request)) {
-        filterChain.doFilter(request, response);
-        return;
+    String token = null;
+
+    if(request.getCookies() != null){
+      for(Cookie cookie: request.getCookies()){
+        if(cookie.getName().equals("accessToken")){
+          token = cookie.getValue();
+        }
       }
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      response.getWriter().write("Token is missing or invalid");
+    }
+
+    if(token == null){
+      filterChain.doFilter(request, response);
       return;
     }
-    jwt = authHeader.substring(7);
-    username = jwtService.extractUsername(jwt);
+
+    username = jwtService.extractUsername(token);
+
     if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
       UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-      if(jwtService.isTokenValid(jwt, userDetails)) {
+      if(jwtService.isTokenValid(token, userDetails)) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
             userDetails,
             null,

@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class MessageService {
@@ -28,7 +26,7 @@ public class MessageService {
     try {
 
       // extract the logged-in user from the token
-      String token = jwtService.getTokenFromHeader(request);
+      String token = jwtService.getTokenFromCookie(request);
       String username = jwtService.extractUsername(token);
       User user = userRepository
         .findByEmail(username)

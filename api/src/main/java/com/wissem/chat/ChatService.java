@@ -9,6 +9,7 @@ import com.wissem.user.UserRepository;
 import com.wissem.user_chat.UserChat;
 import com.wissem.user_chat.UserChatId;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class ChatService {
   public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     try {
       // extract the logged-in user from the token
-      String token = jwtService.getTokenFromHeader(request);
+      String token = jwtService.getTokenFromCookie(request);
       String username = jwtService.extractUsername(token);
       User user = userRepository
         .findByEmail(username)
@@ -65,7 +66,7 @@ public class ChatService {
         .orElseThrow(() -> new UserNotFoundException("There's no user with such id: " + userId));
 
       // extract the logged-in user from the token
-      String token = jwtService.getTokenFromHeader(request);
+      String token = jwtService.getTokenFromCookie(request);
       String username = jwtService.extractUsername(token);
       User user = userRepository
         .findByEmail(username)

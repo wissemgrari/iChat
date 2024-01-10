@@ -49,7 +49,7 @@ public class Message {
     name = "status",
     nullable = false
   )
-  private MessageStaus status = MessageStaus.DELIVERED;
+  private MessageStatus status = MessageStatus.DELIVERED;
 
   @ManyToOne
   @JoinColumn(

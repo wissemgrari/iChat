@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,13 +25,16 @@ public class JwtService {
   private String secretKey;
 
 
-  public String getTokenFromHeader(HttpServletRequest request) {
-    String authorizationHeader = request.getHeader("Authorization");
-    if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-      return authorizationHeader.substring(7);
-    } else {
-      return null;
+  public String getTokenFromCookie(HttpServletRequest request) {
+    String token = null;
+    if(request.getCookies() != null){
+      for(Cookie cookie: request.getCookies()){
+        if(cookie.getName().equals("accessToken")){
+          token = cookie.getValue();
+        }
+      }
     }
+    return token;
   }
 
   public String extractUsername(String jwt) {

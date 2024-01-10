@@ -1,5 +1,6 @@
 package com.wissem.auth;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +26,8 @@ public class AuthenticationController {
   // @route   POST /api/v1/auth/login
   // @access  Public
   @PostMapping("/login")
-  public AuthenticationResponse login(@RequestBody LoginRequest request) {
-    return authService.login(request).getBody();
+  public AuthenticationResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
+    return authService.login(request, response).getBody();
   }
 
 }

@@ -1,6 +1,6 @@
 package com.wissem.message;
 
-public enum MessageStaus {
+public enum MessageStatus {
   DELIVERED,
   SEEN
 }

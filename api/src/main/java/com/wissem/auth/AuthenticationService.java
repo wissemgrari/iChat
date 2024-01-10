@@ -2,9 +2,13 @@ package com.wissem.auth;
 
 import com.wissem.config.JwtService;
 import com.wissem.user.User;
+import com.wissem.user.UserDTOMapper;
 import com.wissem.user.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,13 +41,14 @@ public class AuthenticationService {
         request.getEmail(),
         passwordEncoder.encode(request.getPassword())
       );
-      userRepository.save(user);
 
-      var token = jwtService.generateToken(user);
+      User userResponse = userRepository.save(user);
+
       return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(AuthenticationResponse.builder()
-          .token(token)
+          .message("Registration process succeeded")
+          .user(new UserDTOMapper().apply(userResponse))
           .build());
     } catch (Exception e) {
       return ResponseEntity
@@ -55,9 +60,8 @@ public class AuthenticationService {
   }
 
 
-  public ResponseEntity<AuthenticationResponse> login(LoginRequest request) {
+  public ResponseEntity<AuthenticationResponse> login(LoginRequest request, HttpServletResponse response) {
     try {
-
       authManager.authenticate(
         new UsernamePasswordAuthenticationToken(
           request.getEmail(),
@@ -65,13 +69,25 @@ public class AuthenticationService {
         )
       );
       var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-      var token = jwtService.generateToken(user);
+      var accessToken = jwtService.generateToken(user);
+
+      // set accessToken to cookie header
+      ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+        .httpOnly(true)
+        .secure(false)
+        .path("/")
+        .maxAge(24 * 60 * 60) // equivalent to 1 day
+        .build();
+
+      response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(AuthenticationResponse.builder()
-          .token(token)
+          .message("Login process succeeded")
+          .user(new UserDTOMapper().apply(user))
           .build());
+
     } catch (BadCredentialsException e) {
       return ResponseEntity
         .status(HttpStatus.OK)
