@@ -6,6 +6,7 @@ import com.wissem.user.UserDTOMapper;
 import com.wissem.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -24,6 +25,9 @@ public class AuthenticationService {
   private final UserRepository userRepository;
   private final JwtService jwtService;
   private final AuthenticationManager authManager;
+
+  @Value("${jwt.cookieExpiry}")
+  private int cookieExpiry;
 
   public ResponseEntity<AuthenticationResponse> register(RegisterRequest request) {
 
@@ -96,7 +100,7 @@ public class AuthenticationService {
         .httpOnly(true)
         .secure(false)
         .path("/")
-        .maxAge(24 * 60 * 60) // equivalent to 1 day
+        .maxAge(cookieExpiry)
         .build();
 
       response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());

@@ -21,3 +21,7 @@ spring:
     locations: classpath:db/migration
     enabled: true
     baselineOnMigrate: true
+
+# set cookie expiry for 1 day
+jwt:
+  cookieExpiry: 86400
