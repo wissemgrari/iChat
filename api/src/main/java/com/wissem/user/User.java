@@ -1,14 +1,17 @@
 package com.wissem.user;
 
-import com.wissem.chat.Chat;
 import com.wissem.message.Message;
 import com.wissem.user_chat.UserChat;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter

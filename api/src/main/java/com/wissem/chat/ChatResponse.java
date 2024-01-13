@@ -1,6 +1,5 @@
 package com.wissem.chat;
 
-import com.wissem.user.User;
 import com.wissem.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

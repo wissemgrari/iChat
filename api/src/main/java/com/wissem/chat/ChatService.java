@@ -9,7 +9,6 @@ import com.wissem.user.UserRepository;
 import com.wissem.user_chat.UserChat;
 import com.wissem.user_chat.UserChatId;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

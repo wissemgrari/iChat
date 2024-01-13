@@ -1,16 +1,15 @@
 package com.wissem.chat;
 
 import com.wissem.message.Message;
-import com.wissem.user.User;
 import com.wissem.user_chat.UserChat;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "chats")
