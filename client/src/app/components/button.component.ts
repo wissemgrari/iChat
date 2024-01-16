@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-button',
   template: `
     <button
+    type="{{ type }}"
       [ngClass]="{
         primary: variant === 'primary',
         secondary: variant === 'secondary'
@@ -28,6 +29,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() text!: string;
+  @Input() type: string = "button";
   @Input() icon!: string;
   @Input() variant: string = 'primary';
   @Output() btnClick = new EventEmitter();

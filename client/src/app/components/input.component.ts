@@ -1,4 +1,11 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  ElementRef,
+  forwardRef,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-input',
@@ -8,7 +15,8 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
     >
       <input
         type="{{ type }}"
-        value="{{ value }}"
+        [(ngModel)]="value"
+        (input)="onInput($event)"
         #input
         class="block px-6 pt-6 pb-1 w-full text-white text-lg bg-lightDark appearance-none focus:outline-none focus:ring-0 peer"
         placeholder=" "
@@ -21,13 +29,42 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
       </label>
     </div>
   `,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => InputComponent),
+    },
+  ],
 })
-export class InputComponent {
+export class InputComponent implements ControlValueAccessor {
+
   @Input() type: string = 'text';
-  @Input() value!: string;
   @Input() label!: string;
+  value: string = '';
 
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
+
+  // ControlValueAccessor methods
+  private onChange: (_: any) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  writeValue(value: any): void {
+    this.value = value;
+  }
+
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  onInput(event: Event): void {
+    this.value = (event.target as HTMLInputElement).value;
+    this.onChange(this.value);
+  }
 
   focus() {
     this.input.nativeElement.focus();
