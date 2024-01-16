@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
+import { environment } from 'environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private users: User[] = [];
-  url = 'http://localhost:5000';
+  private url = environment.apiUrl;
 
   async getUsers(): Promise<User[]> {
     const response = await fetch(`${this.url}/users`);

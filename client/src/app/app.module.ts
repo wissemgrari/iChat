@@ -5,6 +5,7 @@ import {
   provideRouter,
   withComponentInputBinding,
 } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { routes } from './routes';
 
 import { AppComponent } from './app.component';
@@ -43,7 +44,7 @@ import { NotFound } from './pages/notfound/notfound.component';
     ChatMessageComponent,
     NotFound,
   ],
-  imports: [BrowserModule, RouterModule.forRoot(routes)],
+  imports: [BrowserModule,FormsModule, ReactiveFormsModule, RouterModule.forRoot(routes)],
   providers: [provideRouter(routes, withComponentInputBinding())],
   bootstrap: [AppComponent],
 })
