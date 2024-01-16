@@ -3,10 +3,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFound } from './pages/notfound/notfound.component';
 import { ChatComponent } from './pages/chat/chat.component';
+import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, canActivate: [authGuard], },
   { path: 'login', component: LoginComponent },
-  { path: 'chat/:id', component: ChatComponent },
+  { path: 'chat/:id', component: ChatComponent, canActivate: [authGuard] },
   { path: '**', component: NotFound },
 ];
