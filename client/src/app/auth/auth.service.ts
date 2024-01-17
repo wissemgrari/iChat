@@ -1,25 +1,40 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'environment';
-import { LoginRequest } from 'types/global-types';
+import { LoginRequest, User } from 'types/global-types';
+import { StorageService } from './storage.service';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class AuthService {
-  private url = environment.apiUrl;
+  constructor(
+    private storageService: StorageService,
+    private http: HttpClient
+  ) {}
 
-  async login(loginRequest: LoginRequest): Promise<void> {
-    const response = await fetch(`${this.url}/auth/login`, {
-      method: 'POST',
-      body: JSON.stringify(loginRequest),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const data = await response.json();
-    console.log(data);
+  private API_URL = environment.apiUrl;
+  private user: User | null = this.storageService.getUser();
+
+  getUser(): User | null {
+    return this.user;
   }
 
+  setUser(user: User): void {
+    this.user = user;
+  }
+
+  login(loginRequest: LoginRequest): Observable<any> {
+    return this.http.post(
+      `${this.API_URL}/auth/login`,
+      loginRequest,
+      httpOptions
+    );
+  }
 }

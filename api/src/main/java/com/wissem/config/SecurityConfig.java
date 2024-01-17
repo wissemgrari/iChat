@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,14 +30,21 @@ public class SecurityConfig {
 
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.addAllowedOrigin("*"); // Allow all origins
-    configuration.addAllowedHeader("*"); // Allow all headers
-    configuration.addAllowedMethod("*"); // Allow all HTTP methods
+    CorsConfiguration config = new CorsConfiguration();
+
+    List<String> allowedOrigins = new ArrayList<>();
+    allowedOrigins.add("http://localhost:4200");
+
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(allowedOrigins);
+    config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
+    source.registerCorsConfiguration("/api/**", config);
     return source;
   }
+
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

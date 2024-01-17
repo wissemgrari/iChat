@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../user/user.service';
-import { User } from '../models/user.model';
+import { User } from 'types/global-types';
 
 @Component({
   selector: 'chat-list',
@@ -12,7 +12,5 @@ import { User } from '../models/user.model';
 })
 export class ChatListComponent {
   users: User[] = [];
-  constructor(private userService: UserService) {
-    this.userService.getUsers().then((users) => (this.users = users));
-  }
+  constructor(private userService: UserService) {}
 }

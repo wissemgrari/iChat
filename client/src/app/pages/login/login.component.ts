@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
+import { StorageService } from 'src/app/auth/storage.service';
 import { LoginRequest } from 'types/global-types';
 
 @Component({
@@ -8,8 +10,11 @@ import { LoginRequest } from 'types/global-types';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  // inject auth service
-  authService: AuthService = new AuthService();
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService,
+    private router: Router
+  ) {}
 
   loginForm = new FormGroup({
     email: new FormControl(''),
@@ -18,8 +23,17 @@ export class LoginComponent {
 
   login(e: Event): void {
     e.preventDefault();
-    if(this.loginForm.invalid) return;
-    this.authService.login(this.loginForm.value as LoginRequest);
-  }
+    if (this.loginForm.invalid) return;
 
+    this.authService.login(this.loginForm.value as LoginRequest).subscribe({
+      next: (data) => {
+        this.storageService.saveUser(data.user);
+        this.authService.setUser(data.user);
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 }

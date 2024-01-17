@@ -6,6 +6,7 @@ import {
   withComponentInputBinding,
 } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routes } from './routes';
 
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { ChatMessagesComponent } from './components/chat-messages.component';
 import { ChatInputComponent } from './components/chat-input.component';
 import { ChatMessageComponent } from './components/chat-message.component';
 import { NotFound } from './pages/notfound/notfound.component';
+import { HttpRequestInterceptor } from './utils/http.interceptor';
 
 @NgModule({
   declarations: [
@@ -44,8 +46,23 @@ import { NotFound } from './pages/notfound/notfound.component';
     ChatMessageComponent,
     NotFound,
   ],
-  imports: [BrowserModule,FormsModule, ReactiveFormsModule, RouterModule.forRoot(routes)],
-  providers: [provideRouter(routes, withComponentInputBinding())],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+  ],
+  providers: [
+    [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: HttpRequestInterceptor,
+        multi: true,
+      },
+    ],
+    provideRouter(routes, withComponentInputBinding()),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../models/user.model';
 import { Location } from '@angular/common';
+import { User } from 'types/global-types';
 
 @Component({
   selector: 'chat-header',
@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
       class="bg-lightDark w-full py-3 flex flex-col gap-y-2 items-center justify-center"
     >
       <img
-        [src]="user.imageURL"
+        [src]=""
         alt="user"
         class="w-14 rounded-full border-2 border-light"
       />

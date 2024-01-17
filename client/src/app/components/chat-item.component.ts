@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../models/user.model';
+import { User } from 'types/global-types';
 
 @Component({
   selector: 'chat-item',
@@ -8,7 +8,7 @@ import { User } from '../models/user.model';
       routerLink="/chat/{{ user.id }}"
       class="flex items-center gap-3 py-5 px-2 rounded-lg cursor-pointer hover:bg-lightDark select-none transition duration-300"
     >
-      <img [src]="user.imageURL" alt="user" class="w-28 rounded-xl" />
+      <img [src]="" alt="user" class="w-28 rounded-xl" />
       <div class="flex flex-col gap-1">
         <p class="capitalize">{{ user.firstName }} {{ user.lastName }}</p>
         <span class="text-sm text-light whitespace-nowrap text-ellipsis"
