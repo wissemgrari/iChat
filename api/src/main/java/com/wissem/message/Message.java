@@ -1,17 +1,20 @@
 package com.wissem.message;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.wissem.chat.Chat;
 import com.wissem.user.User;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Message {
 
   @Id
@@ -58,6 +61,7 @@ public class Message {
     referencedColumnName = "id",
     foreignKey = @ForeignKey(name = "user_message_fk")
   )
+  @JsonBackReference
   private User user;
 
   @ManyToOne
@@ -67,6 +71,7 @@ public class Message {
     referencedColumnName = "id",
     foreignKey = @ForeignKey(name = "chat_message_fk")
   )
+  @JsonBackReference
   private Chat chat;
 
   public Message(String content) {

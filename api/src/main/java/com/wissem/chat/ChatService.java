@@ -4,7 +4,6 @@ import com.wissem.config.JwtService;
 import com.wissem.exception.ChatNotFoundException;
 import com.wissem.exception.UserNotFoundException;
 import com.wissem.user.User;
-import com.wissem.user.UserDTOMapper;
 import com.wissem.user.UserRepository;
 import com.wissem.user_chat.UserChat;
 import com.wissem.user_chat.UserChatId;
@@ -14,12 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +24,8 @@ public class ChatService {
   private final ChatRepository chatRepository;
   private final JwtService jwtService;
   private final UserRepository userRepository;
-  private final UserDTOMapper userDTOMapper;
   private final ChatDTOMapper chatDTOMapper;
 
-  @Transactional
   public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
     try {
       // extract the logged-in user from the token
@@ -43,10 +37,17 @@ public class ChatService {
       // check if the user have chats
       // IF YES: return them
       // IF NO: return null
-      List<Chat> chats = chatRepository.findChatsByUser(user.getId());
-      return ResponseEntity
-        .status(HttpStatus.OK)
-        .body(chats.stream().map(chatDTOMapper).collect(Collectors.toList()));
+      List<ChatDTO> chats = chatRepository.findChatsByUser(user.getId());
+      
+      /*
+      * TODO:
+      *  - For each chat return the user and the participant
+      *  - HINT: user userChats array
+      *  - Change the response type to match the correspond returned data
+      */
+      
+      
+      return ResponseEntity.status(HttpStatus.OK).body(chats);
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return ResponseEntity
@@ -55,9 +56,8 @@ public class ChatService {
     }
   }
 
-  public ResponseEntity<ChatResponse> create(HttpServletRequest request, Map<String, String> requestBody) {
+  public ResponseEntity<ChatDTO> create(HttpServletRequest request, Map<String, String> requestBody) {
     try {
-
       String userId = requestBody.get("userId");
       // check if there's a participant with the given id
       User participant = userRepository
@@ -67,6 +67,7 @@ public class ChatService {
       // extract the logged-in user from the token
       String token = jwtService.getTokenFromCookie(request);
       String username = jwtService.extractUsername(token);
+      
       User user = userRepository
         .findByEmail(username)
         .orElseThrow(() -> new UsernameNotFoundException("No user associated with this email address: " + username));
@@ -75,14 +76,14 @@ public class ChatService {
       if (chatRepository.existsChatByUsers(user.getId(), participant.getId())) {
         return ResponseEntity
           .status(HttpStatus.BAD_REQUEST)
-          .body(ChatResponse.builder().error("The chat is already exist").build());
+          .body(null);  // The chat is already exist
       }
 
       // prevent the user to create a chat with him-self
       if (user.getId().equals(Long.parseLong(userId))) {
         return ResponseEntity
           .status(HttpStatus.CONFLICT)
-          .body(ChatResponse.builder().error("Unable to create a chat with yourself").build());
+          .body(null);  // Unable to create a chat with yourself
       }
 
       Chat newChat = chatRepository.save(new Chat());
@@ -99,13 +100,14 @@ public class ChatService {
 
       return ResponseEntity
         .status(HttpStatus.CREATED)
-        .body(ChatResponse.builder()
-          .chat_id(newChat.getId())
-          .users(Stream.of(user, participant).map(userDTOMapper).collect(Collectors.toList())).build());
+        .body(ChatDTO.builder()
+          .id(newChat.getId())
+          .created_at(newChat.getCreated_at())
+          .build());
     } catch (Exception e) {
       return ResponseEntity
         .status(HttpStatus.BAD_REQUEST)
-        .body(ChatResponse.builder().error("something went wrong: " + e.getMessage()).build());
+        .body(null);
     }
   }
 

@@ -20,15 +20,15 @@ public class ChatController {
   // @route   GET /api/v1/chats
   // @access  Private
   @GetMapping
-  public ResponseEntity<List<ChatDTO>> getAllChats(HttpServletRequest request) {
-    return chatService.getAllChats(request);
+  public List<ChatDTO> ChatResponseDTO(HttpServletRequest request) {
+    return chatService.getAllChats(request).getBody();
   }
 
   // @desc    Create a new chat room
   // @route   POST /api/v1/chats/create
   // @access  Private
   @PostMapping("/create")
-  public ChatResponse create(HttpServletRequest request, @RequestBody Map<String, String> requestBody) {
+  public ChatDTO create(HttpServletRequest request, @RequestBody Map<String, String> requestBody) {
     return chatService.create(request, requestBody).getBody();
   }
 

@@ -1,5 +1,7 @@
 package com.wissem.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.wissem.message.Message;
 import com.wissem.user_chat.UserChat;
 import jakarta.persistence.*;
@@ -72,15 +74,19 @@ public class User implements UserDetails {
     cascade = CascadeType.ALL,
     orphanRemoval = true,
     mappedBy = "user",
-    fetch = FetchType.EAGER
+    fetch = FetchType.LAZY
   )
+  @JsonIgnore
+  @JsonManagedReference
   private List<Message> messages = new ArrayList<>();
 
   @OneToMany(
     cascade = CascadeType.ALL,
     mappedBy = "user",
-    fetch = FetchType.EAGER
+    fetch = FetchType.LAZY
   )
+  @JsonIgnore
+  @JsonManagedReference
   private List<UserChat> userChats = new ArrayList<>();
 
   public User(String firstName, String lastName, String email, String password) {

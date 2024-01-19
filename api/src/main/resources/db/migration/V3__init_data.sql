@@ -18,8 +18,14 @@ VALUES (nextval('user_sequence'), 'Sarah', 'Smith', 'sarahsmith@gmail.com',
 INSERT INTO chats (id, created_at)
 VALUES (1, '2023-09-20 13:02:38.252443');
 
+INSERT INTO chats (id, created_at)
+VALUES (2, '2024-01-24 20:31:38.132443');
+
 INSERT INTO user_chat (chat_id, user_id, participant_id)
 VALUES (1, 1, 2);
+
+INSERT INTO user_chat (chat_id, user_id, participant_id)
+VALUES (2, 2, 3);
 
 
 INSERT INTO messages (id, chat_id, user_id, content, created_at, status)

@@ -1,11 +1,15 @@
 package com.wissem.chat;
 
-import java.time.LocalDateTime;
-import java.util.Map;
+import lombok.*;
 
-public record ChatDTO(
-  Long id,
-  LocalDateTime createdAt,
-  Map<String, Long> users
-) {
+import java.time.LocalDateTime;
+
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ChatDTO {
+  private Long id;
+  private LocalDateTime created_at;
 }

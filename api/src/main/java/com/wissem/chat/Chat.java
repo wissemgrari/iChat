@@ -1,5 +1,7 @@
 package com.wissem.chat;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.wissem.message.Message;
 import com.wissem.user_chat.UserChat;
 import jakarta.persistence.*;
@@ -16,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Chat {
+public class Chat{
 
   @Id
   @SequenceGenerator(
@@ -39,19 +41,25 @@ public class Chat {
     nullable = false,
     columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
   )
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime created_at = LocalDateTime.now();
 
   @OneToMany(
     cascade = CascadeType.ALL,
     orphanRemoval = true,
-    mappedBy = "chat"
+    mappedBy = "chat",
+    fetch = FetchType.LAZY
   )
+  @JsonManagedReference // This is used for bidirectional serialization
+  @JsonIgnoreProperties("chat") // This will ignore the field in serialization
   private List<Message> messages = new ArrayList<>();
 
   @OneToMany(
     mappedBy = "chat",
-    cascade = CascadeType.ALL
+    cascade = CascadeType.ALL,
+    fetch = FetchType.LAZY
   )
+  @JsonManagedReference // This is used for bidirectional serialization
+  @JsonIgnoreProperties("chat") // This will ignore the field in serialization
   private List<UserChat> userChats = new ArrayList<>();
 
 }

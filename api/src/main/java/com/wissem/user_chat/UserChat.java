@@ -1,5 +1,6 @@
 package com.wissem.user_chat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wissem.chat.Chat;
 import com.wissem.user.User;
@@ -27,6 +28,7 @@ public class UserChat {
     foreignKey = @ForeignKey(name = "chat_id_fk")
   )
   @JsonIgnore
+  @JsonBackReference
   private Chat chat;
 
   @ManyToOne
@@ -38,6 +40,7 @@ public class UserChat {
     foreignKey = @ForeignKey(name = "user_id_fk")
   )
   @JsonIgnore
+  @JsonBackReference
   private User user;
 
   @Column(
