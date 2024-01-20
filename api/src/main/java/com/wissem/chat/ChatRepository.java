@@ -15,7 +15,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
   boolean existsChatByUsers(Long userId, Long participantId);
 
 
-  @Query("SELECT new com.wissem.chat.ChatDTO(c.id, c.created_at) FROM Chat c " +
+  @Query("SELECT new com.wissem.chat.ChatDTO(c.id, c.created_at, uc.user.id, uc.participant) FROM Chat c " +
     "INNER JOIN c.userChats uc " +
     "WHERE uc.user.id = :userID OR uc.participant = :userID"
     )

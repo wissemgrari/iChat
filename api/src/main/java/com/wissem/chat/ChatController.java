@@ -20,7 +20,7 @@ public class ChatController {
   // @route   GET /api/v1/chats
   // @access  Private
   @GetMapping
-  public List<ChatDTO> ChatResponseDTO(HttpServletRequest request) {
+  public List<ChatResponse> ChatResponseDTO(HttpServletRequest request) {
     return chatService.getAllChats(request).getBody();
   }
 

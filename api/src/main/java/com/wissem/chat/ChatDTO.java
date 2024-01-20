@@ -1,5 +1,6 @@
 package com.wissem.chat;
 
+import com.wissem.user.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,4 +13,6 @@ import java.time.LocalDateTime;
 public class ChatDTO {
   private Long id;
   private LocalDateTime created_at;
+  private Long user1;
+  private Long user2;
 }
