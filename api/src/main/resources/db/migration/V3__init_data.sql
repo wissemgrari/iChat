@@ -31,12 +31,12 @@ VALUES (2, 2, 3);
 
 -- ************************************************************************************************************* --
 INSERT INTO messages (id, chat_id, user_id, content, created_at, status)
-VALUES (nextval('message_sequence'), currval('chat_sequence'), 1, 'Hello there', '2023-09-20 13:02:48.433500',
+VALUES (nextval('message_sequence'), 1, 1, 'Hello there', '2023-09-20 13:02:48.433500',
         'DELIVERED');
 
 INSERT INTO messages (id, chat_id, user_id, content, created_at, status)
-VALUES (nextval('message_sequence'), currval('chat_sequence'), 2, 'Hi!', '2023-09-22 19:13:52.248482', 'DELIVERED');
+VALUES (nextval('message_sequence'), 1, 2, 'Hi!', '2023-09-22 19:13:52.248482', 'DELIVERED');
 
 INSERT INTO messages (id, chat_id, user_id, content, created_at, status)
-VALUES (nextval('message_sequence'), currval('chat_sequence'), 1, 'How are you doing', '2023-09-22 19:14:00.433500',
+VALUES (nextval('message_sequence'), 1, 1, 'How are you doing', '2023-09-22 19:14:00.433500',
         'DELIVERED');

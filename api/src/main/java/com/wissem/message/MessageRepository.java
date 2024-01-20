@@ -14,5 +14,5 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
     "ORDER BY msg.created_at DESC " +
     "LIMIT 1", nativeQuery = true)
   Optional<Message> findLatestMessageByChatId(@Param("id") Long id);
-
+  
 }

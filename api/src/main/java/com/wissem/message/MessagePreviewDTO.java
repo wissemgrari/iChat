@@ -11,8 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Data
-public class MessagePreview {
+public class MessagePreviewDTO {
   private Long id;
+  private String content;
   private LocalDateTime createdAt;
   private MessageStatus status;
   private Long senderID;

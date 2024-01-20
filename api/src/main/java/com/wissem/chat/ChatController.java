@@ -20,7 +20,7 @@ public class ChatController {
   // @route   GET /api/v1/chats
   // @access  Private
   @GetMapping
-  public List<ChatResponse> ChatResponseDTO(HttpServletRequest request) {
+  public ChatResponse getAllChats(HttpServletRequest request) {
     return chatService.getAllChats(request).getBody();
   }
 
@@ -28,7 +28,7 @@ public class ChatController {
   // @route   POST /api/v1/chats/create
   // @access  Private
   @PostMapping("/create")
-  public ChatDTO create(HttpServletRequest request, @RequestBody Map<String, String> requestBody) {
+  public ChatResponse create(HttpServletRequest request, @RequestBody CreateChatRequest requestBody) {
     return chatService.create(request, requestBody).getBody();
   }
 
@@ -36,8 +36,8 @@ public class ChatController {
   // @route   DELETE /api/v1/chats/:id
   // @access  Private
   @DeleteMapping("/{chatId}")
-  public ResponseEntity<?> remove(@PathVariable String chatId) {
-    return chatService.remove(chatId);
+  public ChatResponse remove(@PathVariable String chatId) {
+    return chatService.remove(chatId).getBody();
   }
 
 }

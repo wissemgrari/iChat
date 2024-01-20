@@ -16,41 +16,54 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MessageService {
-
+  
   private final MessageRepository messageRepository;
   private final ChatRepository chatRepository;
   private final JwtService jwtService;
   private final UserRepository userRepository;
-
-  public ResponseEntity<MessageResponse> sendMessage(HttpServletRequest request, String chatId, Message message) {
+  
+  public ResponseEntity<MessageResponse> sendMessage(HttpServletRequest request,
+                                                     String chatId,
+                                                     MessageRequest message) {
     try {
-
+      // check if there's a chat with the given id
+      Chat chat = chatRepository
+        .findChatById(Long.parseLong(chatId))
+        .orElseThrow(
+          () -> new ChatNotFoundException("No chat associated with id: " + chatId));
+      
       // extract the logged-in user from the token
       String token = jwtService.getTokenFromCookie(request);
       String username = jwtService.extractUsername(token);
       User user = userRepository
         .findByEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException("No user associated with this email address: " + username));
-
-      // check if there's a chat with the given id
-      Chat chat = chatRepository
-        .findChatById(Long.parseLong(chatId))
-        .orElseThrow(() -> new ChatNotFoundException("No chat associated with id: " + chatId));
-
+        .orElseThrow(() -> new UsernameNotFoundException(
+          "No user associated with this email address: " + username));
+      
       // create the message object
       Message newMessage = new Message();
-      newMessage.setContent(message.getContent());
+      newMessage.setContent(message.content());
       newMessage.setUser(user);
       newMessage.setChat(chat);
-
+      
       Message response = messageRepository.save(newMessage);
-
+      
       return ResponseEntity
         .status(HttpStatus.CREATED)
-        .body(MessageResponse.builder().message_id(response.getId()).chat_id(response.getChat().getId()).build());
-
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponse.builder().error(e.getMessage()).build());
+        .body(MessageSuccessResponse
+          .builder()
+          .id(response.getId())
+          .content(response.getContent())
+          .createdAt(response.getCreatedAt())
+          .chat_id(response.getChat().getId())
+          .senderID(response.getUser().getId())
+          .build());
+      
+    }
+    catch (Exception e) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(MessageErrorResponse.builder().error(e.getMessage()).build());
     }
   }
 }
