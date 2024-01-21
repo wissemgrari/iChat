@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { UserService } from '../user/user.service';
-import { User } from 'types/global-types';
+import { Component, Input } from '@angular/core';
+import { Chat } from 'types/global-types';
 
 @Component({
   selector: 'chat-list',
   template: `
-    <div class="max-h-[55vh] overflow-y-auto" *ngFor="let user of users">
-      <chat-item [user]="user"></chat-item>
+    <div class="max-h-[55vh] overflow-y-auto" *ngFor="let chat of chats">
+      <chat-item [chat]="chat"></chat-item>
     </div>
   `,
 })
 export class ChatListComponent {
-  users: User[] = [];
-  constructor(private userService: UserService) {}
+  constructor() {}
+
+  @Input() chats!: Chat[];
 }

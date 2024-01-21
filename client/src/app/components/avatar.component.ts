@@ -1,15 +1,72 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { User } from 'types/global-types';
 
 @Component({
-  selector: 'app-avatar',
+  selector: 'avatar',
   template: `
     <div class="flex flex-col items-center gap-1">
       <img
-        class="w-12 rounded-full border-2 border-light"
-        src="https://xsgames.co/randomusers/assets/avatars/male/18.jpg"
+        *ngIf="user?.imageURL"
+        class="w-12 rounded-full border-2"
+        [src]="user?.imageURL"
         alt="avatar"
       />
+      <div
+        class="w-12 h-12 flex justify-center items-center"
+        [style.backgroundColor]="avatarBG"
+        [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"
+        [style.border]="style == 'circle' ? '2px solid #ccc' : 'none'"
+      >
+        <span class="uppercase text-sm">
+          {{ getInitials() }}
+        </span>
+      </div>
     </div>
   `,
 })
-export class AvatarComponent {}
+export class AvatarComponent {
+
+  avatarBG: string = ""
+
+  @Input() user!: User | null;
+  @Input() style: 'circle' | 'square' = 'circle'
+
+  getInitials(): string {
+    if (this.user && this.user.firstName && this.user.lastName) {
+      return this.user.firstName.charAt(0) + this.user.lastName.charAt(0);
+    } else {
+      return '';
+    }
+  }
+
+  colors = [
+    '#2196F3',
+    '#32c787',
+    '#00BCD4',
+    '#ff5652',
+    '#e13849',
+    '#ffc107',
+    '#ff85af',
+    '#FF9800',
+    '#39bbb0',
+    '#03396c',
+    '#3f67fa',
+    '#fbcb6d',
+    '#667895',
+    '#0e1d2c',
+    '#7a3131',
+    '#ee4343',
+    '#b4924c',
+  ];
+
+
+  getRandomColor(): string {
+    const randomIndex = Math.floor(Math.random() * this.colors.length);
+    return this.colors[randomIndex];
+  }
+
+  ngOnInit() {
+    this.avatarBG = this.getRandomColor()
+  }
+
+}

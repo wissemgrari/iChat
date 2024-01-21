@@ -16,13 +16,18 @@ export class HomeService {
   private chats: Chat[] = this.storageService.getChats() ?? [];
 
   // get the chats of the current user
-  getChats(): Observable<any> {
+  fetchChats(): Observable<any> {
     return this.http.get<any>(`${this.API_URL}/chats`, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
   }
+
+  getChats(): Chat[] {
+    return this.chats;
+  }
+
   setChats(data: Chat[]) {
     this.chats = data;
   }
