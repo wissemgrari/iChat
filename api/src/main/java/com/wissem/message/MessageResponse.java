@@ -1,5 +1,6 @@
 package com.wissem.message;
 
+import com.wissem.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public interface MessageResponse {
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-class MessageSuccessResponse implements MessageResponse{
+class MessageSuccessResponse implements MessageResponse {
   private Long id;
   private String content;
   private LocalDateTime createdAt;
@@ -29,7 +30,7 @@ class MessageSuccessResponse implements MessageResponse{
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-class MessageErrorResponse implements MessageResponse{
+class MessageErrorResponse implements MessageResponse {
   private String error;
 }
 
@@ -38,13 +39,17 @@ class MessageErrorResponse implements MessageResponse{
 @AllArgsConstructor
 @NoArgsConstructor
 class MessageListResponse implements MessageResponse {
+  private UserDTO user;
+  private UserDTO participant;
   private List<MessageResponse> messages;
 }
 
-class MessageResponseMapper implements MessageResponse, Function<Message, MessageResponse> {
+class MessageResponseMapper
+  implements MessageResponse, Function<Message, MessageResponse> {
   @Override
   public MessageSuccessResponse apply(Message message) {
-    return MessageSuccessResponse.builder()
+    return MessageSuccessResponse
+      .builder()
       .id(message.getId())
       .content(message.getContent())
       .createdAt(message.getCreatedAt())

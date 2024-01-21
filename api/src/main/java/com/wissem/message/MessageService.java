@@ -5,7 +5,9 @@ import com.wissem.chat.ChatRepository;
 import com.wissem.config.JwtService;
 import com.wissem.exception.ChatNotFoundException;
 import com.wissem.user.User;
+import com.wissem.user.UserDTOMapper;
 import com.wissem.user.UserRepository;
+import com.wissem.user_chat.UserChat;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ public class MessageService {
   private final ChatRepository chatRepository;
   private final JwtService jwtService;
   private final UserRepository userRepository;
+  private final UserDTOMapper userDTOMapper;
   
   
   public ResponseEntity<MessageResponse> getMessages(HttpServletRequest request,
@@ -52,9 +55,24 @@ public class MessageService {
         .anyMatch(userChat -> Objects.equals(userChat.getUser().getId(), user.getId()) ||
           Objects.equals(userChat.getParticipant(), user.getId()));
       
-      if(!isMember) {
-        throw new Exception("Your not eligible to do such action since your not a member of the chat");
+      if (!isMember) {
+        throw new Exception(
+          "Your not eligible to do such action since your not a member of the chat");
       }
+      
+      // get the participant object
+      Long id = chat.getUserChats()
+        .stream()
+        .filter(uc -> !Objects.equals(uc.getUser().getId(), user.getId()))
+        .findFirst()
+        .map(uc -> uc.getUser().getId())
+        .orElseGet(() -> chat.getUserChats()
+          .stream()
+          .findFirst()
+          .map(UserChat::getParticipant)
+          .orElse(null));
+      
+      User participant = userRepository.findById(id).orElse(null);
       
       List<Message> messages = chat.getMessages();
       
@@ -64,9 +82,15 @@ public class MessageService {
         response.add(new MessageResponseMapper().apply(message));
       }
       
+      assert participant != null;
       return ResponseEntity
         .status(HttpStatus.OK)
-        .body(MessageListResponse.builder().messages(response).build());
+        .body(MessageListResponse
+          .builder()
+          .user(userDTOMapper.apply(user))
+          .participant(userDTOMapper.apply(participant))
+          .messages(response)
+          .build());
       
     }
     catch (Exception e) {
