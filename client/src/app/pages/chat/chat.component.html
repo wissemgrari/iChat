@@ -1,5 +1,5 @@
 <div class="absolute left-0 top-0 w-full h-full flex flex-col">
-  <!-- <chat-header [user]="user"></chat-header> -->
-  <chat-messages class="flex-1 overflow-y-auto"></chat-messages>
+  <chat-header [participant]="getParticipant()"></chat-header>
+  <chat-messages [user]="getUser()" [messages]="getMessages()" class="flex-1 overflow-y-auto"></chat-messages>
   <chat-input></chat-input>
 </div>

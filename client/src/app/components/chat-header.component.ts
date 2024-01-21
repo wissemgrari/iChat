@@ -8,13 +8,9 @@ import { User } from 'types/global-types';
     <div
       class="bg-lightDark w-full py-3 flex flex-col gap-y-2 items-center justify-center"
     >
-      <img
-        [src]=""
-        alt="user"
-        class="w-14 rounded-full border-2 border-light"
-      />
+      <avatar [user]="participant" />
       <span class="text-white text-lg font-medium"
-        >{{ user.firstName }} {{ user.lastName }}</span
+        >{{ participant?.firstName }} {{ participant?.lastName }}</span
       >
 
       <div
@@ -31,7 +27,7 @@ import { User } from 'types/global-types';
   `,
 })
 export class ChatHeaderComponent {
-  @Input() user!: User;
+  @Input() participant!: User | null;
 
   constructor(private location: Location) {}
 
