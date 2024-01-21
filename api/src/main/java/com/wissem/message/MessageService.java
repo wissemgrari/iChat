@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,17 +30,37 @@ public class MessageService {
   public ResponseEntity<MessageResponse> getMessages(HttpServletRequest request,
                                                      String chatID) {
     try {
+      
       // check if there's a chat with the given id
       Chat chat = chatRepository
         .findChatById(Long.parseLong(chatID))
         .orElseThrow(
           () -> new ChatNotFoundException("No chat associated with id: " + chatID));
       
+      // extract the logged-in user from the token
+      String token = jwtService.getTokenFromCookie(request);
+      String username = jwtService.extractUsername(token);
+      User user = userRepository
+        .findByEmail(username)
+        .orElseThrow(() -> new UsernameNotFoundException(
+          "No user associated with this email address: " + username));
+      
+      // make sure that the logged-in user is a member of the request chat
+      boolean isMember = chat
+        .getUserChats()
+        .stream()
+        .anyMatch(userChat -> Objects.equals(userChat.getUser().getId(), user.getId()) ||
+          Objects.equals(userChat.getParticipant(), user.getId()));
+      
+      if(!isMember) {
+        throw new Exception("Your not eligible to do such action since your not a member of the chat");
+      }
+      
       List<Message> messages = chat.getMessages();
       
       List<MessageResponse> response = new ArrayList<>();
       
-      for(Message message : messages) {
+      for (Message message : messages) {
         response.add(new MessageResponseMapper().apply(message));
       }
       
