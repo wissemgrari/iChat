@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.function.Function;
 
 
 public interface MessageResponse {
@@ -29,4 +31,25 @@ class MessageSuccessResponse implements MessageResponse{
 @NoArgsConstructor
 class MessageErrorResponse implements MessageResponse{
   private String error;
+}
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+class MessageListResponse implements MessageResponse {
+  private List<MessageResponse> messages;
+}
+
+class MessageResponseMapper implements MessageResponse, Function<Message, MessageResponse> {
+  @Override
+  public MessageSuccessResponse apply(Message message) {
+    return MessageSuccessResponse.builder()
+      .id(message.getId())
+      .content(message.getContent())
+      .createdAt(message.getCreatedAt())
+      .senderID(message.getUser().getId())
+      .chat_id(message.getChat().getId())
+      .build();
+  }
 }

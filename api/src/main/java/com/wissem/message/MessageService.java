@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MessageService {
@@ -22,15 +25,45 @@ public class MessageService {
   private final JwtService jwtService;
   private final UserRepository userRepository;
   
+  
+  public ResponseEntity<MessageResponse> getMessages(HttpServletRequest request,
+                                                     String chatID) {
+    try {
+      // check if there's a chat with the given id
+      Chat chat = chatRepository
+        .findChatById(Long.parseLong(chatID))
+        .orElseThrow(
+          () -> new ChatNotFoundException("No chat associated with id: " + chatID));
+      
+      List<Message> messages = chat.getMessages();
+      
+      List<MessageResponse> response = new ArrayList<>();
+      
+      for(Message message : messages) {
+        response.add(new MessageResponseMapper().apply(message));
+      }
+      
+      return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(MessageListResponse.builder().messages(response).build());
+      
+    }
+    catch (Exception e) {
+      return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(MessageErrorResponse.builder().error(e.getMessage()).build());
+    }
+  }
+  
   public ResponseEntity<MessageResponse> sendMessage(HttpServletRequest request,
-                                                     String chatId,
+                                                     String chatID,
                                                      MessageRequest message) {
     try {
       // check if there's a chat with the given id
       Chat chat = chatRepository
-        .findChatById(Long.parseLong(chatId))
+        .findChatById(Long.parseLong(chatID))
         .orElseThrow(
-          () -> new ChatNotFoundException("No chat associated with id: " + chatId));
+          () -> new ChatNotFoundException("No chat associated with id: " + chatID));
       
       // extract the logged-in user from the token
       String token = jwtService.getTokenFromCookie(request);
