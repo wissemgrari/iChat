@@ -6,7 +6,7 @@ import { User } from 'types/global-types';
   selector: 'chat-header',
   template: `
     <div
-      class="bg-lightDark w-full py-3 flex flex-col gap-y-2 items-center justify-center"
+      class="bg-lightDark w-full py-3 flex flex-col gap-y-2 items-center justify-center mb-5"
     >
       <avatar [user]="participant" />
       <span class="text-white text-lg font-medium"

@@ -3,6 +3,11 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface MessageRequest {
+  message: string,
+  chatID: string
+}
+
 export interface User {
   id: number;
   email: string;
