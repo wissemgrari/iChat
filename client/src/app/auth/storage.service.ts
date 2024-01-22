@@ -33,7 +33,9 @@ export class StorageService {
     // remove any exisiting saved chats
     window.sessionStorage.removeItem(USER_CHATS);
     // save the chats
-    window.sessionStorage.setItem(USER_CHATS, JSON.stringify(chats))
+    if(chats) {
+      window.sessionStorage.setItem(USER_CHATS, JSON.stringify(chats))
+    }
   }
 
   public getChats(): Chat[] | null {

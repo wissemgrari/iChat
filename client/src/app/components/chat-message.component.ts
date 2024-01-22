@@ -45,7 +45,6 @@ export class ChatMessageComponent {
       minute: '2-digit',
       hour12: true,
     });
-
   }
 
 

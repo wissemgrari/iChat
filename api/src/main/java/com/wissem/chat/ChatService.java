@@ -58,7 +58,6 @@ public class ChatService {
         // get the latest message foreach chat to use it for preview
         Message msgPreview =
           messageRepository.findLatestMessageByChatId(chat.getId()).orElse(null);
-        assert msgPreview != null;
         
         response.add(ChatSuccessResponse
           .builder()
@@ -68,9 +67,11 @@ public class ChatService {
             userRepository.findById(chat.getUser1()).orElse(null))))
           .user2(userDTOMapper.apply(Objects.requireNonNull(
             userRepository.findById(chat.getUser2()).orElse(null))))
-          .msgPreview(messagePreviewDTOMapper.apply(msgPreview))
+          .msgPreview(
+            msgPreview != null ? messagePreviewDTOMapper.apply(msgPreview) : null)
           .build());
       }
+      
       return ResponseEntity
         .status(HttpStatus.OK)
         .body(ChatListResponse.builder().chats(response).build());

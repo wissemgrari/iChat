@@ -17,7 +17,7 @@ import { User } from 'types/global-types';
         [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"
         [style.border]="style == 'circle' ? '2px solid #ccc' : 'none'"
       >
-        <span class="uppercase text-sm font-medium">
+        <span class="uppercase text-sm font-medium text-white">
           {{ getInitials() }}
         </span>
       </div>
