@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class MessageService {
   private final JwtService jwtService;
   private final UserRepository userRepository;
   private final UserDTOMapper userDTOMapper;
+  private final SimpMessagingTemplate messagingTemplate;
   
   
   public ResponseEntity<MessageResponse> getMessages(HttpServletRequest request,
@@ -61,12 +63,14 @@ public class MessageService {
       }
       
       // get the participant object
-      Long id = chat.getUserChats()
+      Long id = chat
+        .getUserChats()
         .stream()
         .filter(uc -> !Objects.equals(uc.getUser().getId(), user.getId()))
         .findFirst()
         .map(uc -> uc.getUser().getId())
-        .orElseGet(() -> chat.getUserChats()
+        .orElseGet(() -> chat
+          .getUserChats()
           .stream()
           .findFirst()
           .map(UserChat::getParticipant)
@@ -125,6 +129,28 @@ public class MessageService {
       newMessage.setChat(chat);
       
       Message response = messageRepository.save(newMessage);
+      
+      // get the participant object
+      Long id = chat
+        .getUserChats()
+        .stream()
+        .filter(uc -> !Objects.equals(uc.getUser().getId(), user.getId()))
+        .findFirst()
+        .map(uc -> uc.getUser().getId())
+        .orElseGet(() -> chat
+          .getUserChats()
+          .stream()
+          .findFirst()
+          .map(UserChat::getParticipant)
+          .orElse(null));
+      
+      User participant = userRepository.findById(id).orElse(null);
+      
+      messagingTemplate.convertAndSendToUser(participant.getId().toString(),
+        "/queue/messages",
+        new MessageSuccessResponse(participant.getId(), response.getContent(),
+          response.getCreatedAt(), response.getUser().getId(),
+          response.getChat().getId()));
       
       return ResponseEntity
         .status(HttpStatus.CREATED)
