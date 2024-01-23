@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { environment } from 'environment';
 import { Observable } from 'rxjs';
 import { StompService } from 'src/app/ws/stomp.service';
@@ -12,26 +12,25 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class ChatService {
+export class ChatService implements OnInit{
   private API_URL = environment.apiUrl;
 
   constructor(private http: HttpClient, private stomp: StompService) {}
+
+
+  ngOnInit(): void {}
 
   getChatMessages(chatID: string): Observable<any> {
     return this.http.get(`${this.API_URL}/messages/${chatID}`, httpOptions);
   }
 
-  // sendMessage(request: MessageRequest): Observable<any> {
-  //   return this.http.post(
-  //     `${this.API_URL}/messages/send/${request.chatID}`,
-  //     {
-  //       content: request.message,
-  //     },
-  //     httpOptions
-  //   );
-  // }
 
   sendMessage(request: MessageRequest): void {
+    this.stomp.send(
+      `/app/${request.chatID}/send`,
+      {},
+      JSON.stringify(request.message)
+    );
   }
 
 }

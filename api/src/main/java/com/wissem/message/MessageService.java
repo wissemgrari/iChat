@@ -104,54 +104,40 @@ public class MessageService {
     }
   }
   
-  public ResponseEntity<MessageResponse> sendMessage(HttpServletRequest request,
+  public ResponseEntity<MessageResponse> sendMessage(
                                                      String chatID,
                                                      MessageRequest message) {
     try {
+      
       // check if there's a chat with the given id
       Chat chat = chatRepository
         .findChatById(Long.parseLong(chatID))
         .orElseThrow(
           () -> new ChatNotFoundException("No chat associated with id: " + chatID));
-      
-      // extract the logged-in user from the token
-      String token = jwtService.getTokenFromCookie(request);
-      String username = jwtService.extractUsername(token);
-      User user = userRepository
-        .findByEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException(
-          "No user associated with this email address: " + username));
-      
+
+      // Retrieve the message sender object
+      Long senderID = message.senderID();
+      User user = userRepository.findById(senderID).orElse(null);
+
       // create the message object
       Message newMessage = new Message();
       newMessage.setContent(message.content());
       newMessage.setUser(user);
       newMessage.setChat(chat);
-      
+
       Message response = messageRepository.save(newMessage);
-      
-      // get the participant object
-      Long id = chat
-        .getUserChats()
-        .stream()
-        .filter(uc -> !Objects.equals(uc.getUser().getId(), user.getId()))
-        .findFirst()
-        .map(uc -> uc.getUser().getId())
-        .orElseGet(() -> chat
-          .getUserChats()
-          .stream()
-          .findFirst()
-          .map(UserChat::getParticipant)
-          .orElse(null));
-      
-      User participant = userRepository.findById(id).orElse(null);
-      
-      messagingTemplate.convertAndSendToUser(participant.getId().toString(),
+
+      // get the recipient object
+      Long recipientID = message.recipientID();
+      User recipient = userRepository.findById(recipientID).orElse(null);
+
+
+      messagingTemplate.convertAndSendToUser(recipient.getId().toString(),
         "/queue/messages",
-        new MessageSuccessResponse(participant.getId(), response.getContent(),
+        new MessageSuccessResponse(recipient.getId(), response.getContent(),
           response.getCreatedAt(), response.getUser().getId(),
           response.getChat().getId()));
-      
+
       return ResponseEntity
         .status(HttpStatus.CREATED)
         .body(MessageSuccessResponse

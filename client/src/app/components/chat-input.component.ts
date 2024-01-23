@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ChatService } from '../pages/chat/chat.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
+import { User } from 'types/global-types';
 
 @Component({
   selector: 'chat-input',
@@ -33,7 +35,9 @@ import { ActivatedRoute } from '@angular/router';
 export class ChatInputComponent {
   private id!: string;
 
-  constructor(private chatService: ChatService, private route: ActivatedRoute) {
+  @Input() participant!: User | null;
+
+  constructor(private chatService: ChatService, private route: ActivatedRoute, private authService: AuthService) {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id') ?? '';
     });
@@ -50,7 +54,9 @@ export class ChatInputComponent {
     this.chatService
       .sendMessage({
         message: {
-          content: this.messageForm.value.message as string
+          content: this.messageForm.value.message as string,
+          senderID: this.authService.getUser()?.id ?? 0,
+          recipientID: this.participant?.id ?? 0
         },
         chatID: this.id
       })

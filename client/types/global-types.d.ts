@@ -6,6 +6,8 @@ export interface LoginRequest {
 export interface MessageRequest {
   message: {
     content: string
+    senderID: number
+    recipientID: number
   },
   chatID: string
 }

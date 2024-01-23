@@ -77,4 +77,15 @@ public class Message {
   public Message(String content) {
     this.content = content;
   }
+  
+  
+  public Message(Long id, String content, LocalDateTime createdAt, MessageStatus status,
+                 User user, Chat chat) {
+    this.id = id;
+    this.content = content;
+    this.createdAt = createdAt;
+    this.status = status;
+    this.user = user;
+    this.chat = chat;
+  }
 }
