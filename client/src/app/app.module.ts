@@ -26,6 +26,7 @@ import { ChatInputComponent } from './components/chat-input.component';
 import { ChatMessageComponent } from './components/chat-message.component';
 import { NotFound } from './pages/notfound/notfound.component';
 import { HttpRequestInterceptor } from './utils/http.interceptor';
+import { StompService } from './ws/stomp.service';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { HttpRequestInterceptor } from './utils/http.interceptor';
       },
     ],
     provideRouter(routes, withComponentInputBinding()),
+    StompService
   ],
   bootstrap: [AppComponent],
 })
