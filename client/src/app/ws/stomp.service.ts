@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { environment } from 'environment';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
-
 @Injectable({
     providedIn: 'root',
 })
@@ -13,6 +12,10 @@ export class StompService {
 
     socket = new SockJS(this.url);
     stompClient = Stomp.over(this.socket);
+
+    send(destination: string, headers?: Object, body?: string) {
+        this.stompClient.send(destination, headers, body)
+    }
 
     subscribe(topic: string, callback: any): void {
         // If stomp client is currently connecting add the topic to the queue

@@ -43,6 +43,7 @@ export class ChatInputComponent {
     message: new FormControl(''),
   });
 
+
   onSubmit(event: Event): void {
     event.preventDefault();
     if (this.messageForm.invalid) return;
@@ -54,4 +55,5 @@ export class ChatInputComponent {
         chatID: this.id
       })
   }
+
 }

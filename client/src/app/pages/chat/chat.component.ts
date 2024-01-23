@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from './chat.service';
 import { Message, User } from 'types/global-types';
@@ -8,7 +8,7 @@ import { Message, User } from 'types/global-types';
   selector: 'app-chat',
   templateUrl: './chat.component.html',
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit {
 
   private id!: string;
 
@@ -36,17 +36,18 @@ export class ChatComponent {
       this.id = params.get('id') ?? '';
     });
   }
-
   ngOnInit(): void {
+    // load all messages
     this.chatService.getChatMessages(this.id).subscribe({
-      next: ({ user, participant, messages }) => {
-        this.user = user;
-        this.participant = participant;
-        this.messages = messages;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+          next: ({ user, participant, messages }) => {
+            this.user = user;
+            this.participant = participant;
+            this.messages = messages;
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
   }
+
 }
