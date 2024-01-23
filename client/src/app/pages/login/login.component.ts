@@ -29,6 +29,7 @@ export class LoginComponent {
       next: (data) => {
         this.storageService.saveUser(data.user);
         this.authService.setUser(data.user);
+
         this.router.navigate(['/']);
       },
       error: (err) => {

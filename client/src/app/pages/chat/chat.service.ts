@@ -14,20 +14,26 @@ const httpOptions = {
 export class ChatService {
   private API_URL = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient
+  ) {}
 
   getChatMessages(chatID: string): Observable<any> {
     return this.http.get(`${this.API_URL}/messages/${chatID}`, httpOptions);
   }
 
-  sendMessage(request: MessageRequest): Observable<any> {
-    console.log(request)
-    return this.http.post(
-      `${this.API_URL}/messages/send/${request.chatID}`,
-      {
-        content: request.message,
-      },
-      httpOptions
-    );
+  // sendMessage(request: MessageRequest): Observable<any> {
+  //   console.log(request)
+  //   return this.http.post(
+  //     `${this.API_URL}/messages/send/${request.chatID}`,
+  //     {
+  //       content: request.message,
+  //     },
+  //     httpOptions
+  //   );
+  // }
+
+  sendMessage(request: MessageRequest) {
+    
   }
 }

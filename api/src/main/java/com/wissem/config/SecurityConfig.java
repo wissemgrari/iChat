@@ -24,42 +24,44 @@ import java.util.List;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-
+  
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
-
+  
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
-
+    
     List<String> allowedOrigins = new ArrayList<>();
     allowedOrigins.add("http://localhost:4200");
-
+    
     config.setAllowCredentials(true);
     config.setAllowedOrigins(allowedOrigins);
     config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
-    config.setAllowedMethods(List.of("*"));
-
+    config.setAllowedMethods(
+      Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+    
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/api/**", config);
+    source.registerCorsConfiguration("/**", config);
     return source;
   }
-
-
+  
+  
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
-        .cors(Customizer.withDefaults())
-        .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(auth ->
-            auth
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .anyRequest().authenticated()
-        )
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
+      .cors(Customizer.withDefaults())
+      .csrf(AbstractHttpConfigurer::disable)
+      .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/api/v1/auth/**", "/ws/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated())
+      .sessionManagement(
+        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .authenticationProvider(authenticationProvider)
+      .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+      .build();
   }
-
+  
 }

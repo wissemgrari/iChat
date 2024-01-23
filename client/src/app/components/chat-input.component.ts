@@ -48,12 +48,10 @@ export class ChatInputComponent {
     if (this.messageForm.invalid) return;
     this.chatService
       .sendMessage({
-        message: this.messageForm.value.message as string,
-        chatID: this.id,
+        message: {
+          content: this.messageForm.value.message as string
+        },
+        chatID: this.id
       })
-      .subscribe({
-        next: (response) => this.messageForm.setValue({message: ''}),
-        error: (error) => console.log(error),
-      });
   }
 }

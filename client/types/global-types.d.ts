@@ -4,7 +4,9 @@ export interface LoginRequest {
 }
 
 export interface MessageRequest {
-  message: string,
+  message: {
+    content: string
+  },
   chatID: string
 }
 
