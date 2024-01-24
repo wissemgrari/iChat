@@ -12,6 +12,15 @@ module.exports = {
         blue: "#007AFF",
         darkBlue: "#0032FD",
       },
+      keyframes: {
+        fade: {
+          '0%': { opacity: 0},
+          '100%': { opacity: 1 },
+        },
+      },
+      animation: {
+        fadeIn: 'fade 1s linear',
+      },
     },
   },
   plugins: [],

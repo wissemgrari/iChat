@@ -16,7 +16,8 @@ export class StompService {
 
   stompClient = Stomp.over(this.socket);
 
-  constructor() {}
+  constructor() {
+  }
 
   send(destination: string, headers?: Object, body?: string) {
     this.stompClient.send(destination, headers, body);

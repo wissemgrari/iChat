@@ -22,6 +22,7 @@ export interface User {
 
 export interface Message {
   id: number;
+  chat_id: number;
   content: string;
   createdAt: Date;
   status: 'DELEIVRED' | 'SEEN';

@@ -29,7 +29,7 @@ export class StorageService {
     return null;
   }
 
-  public saveChats(chats: Chat[]) :void {
+  public setChats(chats: Chat[]) :void {
     // remove any exisiting saved chats
     window.sessionStorage.removeItem(USER_CHATS);
     // save the chats

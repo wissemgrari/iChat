@@ -23,6 +23,7 @@ class MessageSuccessResponse implements MessageResponse {
   private String content;
   private LocalDateTime createdAt;
   private Long senderID;
+  private MessageStatus status;
   private Long chat_id;
 }
 
@@ -52,6 +53,7 @@ class MessageResponseMapper
       .builder()
       .id(message.getId())
       .content(message.getContent())
+      .status(message.getStatus())
       .createdAt(message.getCreatedAt())
       .senderID(message.getUser().getId())
       .chat_id(message.getChat().getId())

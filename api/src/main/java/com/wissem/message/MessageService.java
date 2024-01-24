@@ -104,9 +104,7 @@ public class MessageService {
     }
   }
   
-  public ResponseEntity<MessageResponse> sendMessage(
-                                                     String chatID,
-                                                     MessageRequest message) {
+  public void sendMessage(String chatID, MessageRequest message) {
     try {
       
       // check if there's a chat with the given id
@@ -114,46 +112,35 @@ public class MessageService {
         .findChatById(Long.parseLong(chatID))
         .orElseThrow(
           () -> new ChatNotFoundException("No chat associated with id: " + chatID));
-
+      
       // Retrieve the message sender object
       Long senderID = message.senderID();
       User user = userRepository.findById(senderID).orElse(null);
-
+      
       // create the message object
       Message newMessage = new Message();
       newMessage.setContent(message.content());
       newMessage.setUser(user);
       newMessage.setChat(chat);
-
+      
       Message response = messageRepository.save(newMessage);
-
+      
       // get the recipient object
       Long recipientID = message.recipientID();
       User recipient = userRepository.findById(recipientID).orElse(null);
-
-
+      
+      // inform the recipient with the new message
       messagingTemplate.convertAndSendToUser(recipient.getId().toString(),
-        "/queue/messages",
-        new MessageSuccessResponse(recipient.getId(), response.getContent(),
-          response.getCreatedAt(), response.getUser().getId(),
-          response.getChat().getId()));
-
-      return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .body(MessageSuccessResponse
-          .builder()
-          .id(response.getId())
-          .content(response.getContent())
-          .createdAt(response.getCreatedAt())
-          .chat_id(response.getChat().getId())
-          .senderID(response.getUser().getId())
-          .build());
+        "/queue/messages", new MessageResponseMapper().apply(response));
+      
+      // return the message data to the sender
+      messagingTemplate.convertAndSendToUser(user.getId().toString(),
+        "/sent/messages", new MessageResponseMapper().apply(response));
       
     }
     catch (Exception e) {
-      return ResponseEntity
-        .status(HttpStatus.BAD_REQUEST)
-        .body(MessageErrorResponse.builder().error(e.getMessage()).build());
+      
+      System.out.println(e.getMessage());
     }
   }
 }

@@ -1,5 +1,6 @@
+<!-- chat.html -->
 <div class="absolute left-0 top-0 w-full h-full flex flex-col">
   <chat-header [participant]="getParticipant()"></chat-header>
-  <chat-messages [user]="getUser()" [messages]="getMessages()" class="flex-1 overflow-y-auto"></chat-messages>
-  <chat-input [participant]="getParticipant()"></chat-input>
+  <chat-messages #chatListContainer class="flex-1" [user]="getUser()" [messages]="getMessages()"></chat-messages>
+  <chat-input (sendMessage)="sendMessage($event)"></chat-input>
 </div>

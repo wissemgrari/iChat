@@ -12,5 +12,6 @@ import { Chat } from 'types/global-types';
 export class ChatListComponent {
   constructor() {}
 
-  @Input() chats!: Chat[];
+  @Input() chats!: Chat[] | null;
+  
 }

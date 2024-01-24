@@ -1,9 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ChatService } from '../pages/chat/chat.service';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { User } from 'types/global-types';
 
 @Component({
   selector: 'chat-input',
@@ -18,7 +14,7 @@ import { User } from 'types/global-types';
         <textarea
           formControlName="message"
           rows="1"
-          class="bg-transparent flex-1 outline-none px-5 py-3 border border-grey rounded-full placeholder:text-sm focus-within:border-light transition-all duration-300"
+          class="bg-transparent flex-1 outline-none px-5 py-3 border border-grey rounded-full placeholder:text-sm resize-none focus-within:border-light transition-all duration-300"
           placeholder="Type message"
         ></textarea>
         <button
@@ -33,33 +29,18 @@ import { User } from 'types/global-types';
   styles: [],
 })
 export class ChatInputComponent {
-  private id!: string;
+  @Output() sendMessage = new EventEmitter<string>()
 
-  @Input() participant!: User | null;
-
-  constructor(private chatService: ChatService, private route: ActivatedRoute, private authService: AuthService) {
-    this.route.paramMap.subscribe((params) => {
-      this.id = params.get('id') ?? '';
-    });
-  }
+  constructor() {}
 
   messageForm = new FormGroup({
     message: new FormControl(''),
   });
 
-
   onSubmit(event: Event): void {
     event.preventDefault();
     if (this.messageForm.invalid) return;
-    this.chatService
-      .sendMessage({
-        message: {
-          content: this.messageForm.value.message as string,
-          senderID: this.authService.getUser()?.id ?? 0,
-          recipientID: this.participant?.id ?? 0
-        },
-        chatID: this.id
-      })
+    this.sendMessage.emit(this.messageForm.value.message as string)
+    this.messageForm.value.message = '';
   }
-
 }

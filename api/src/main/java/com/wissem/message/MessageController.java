@@ -29,9 +29,8 @@ public class MessageController {
   // @route   WEBSOCKET /app/chatID/send
   // @access  Private
   @MessageMapping("/{chatID}/send")
-  public MessageResponse sendMessage(@DestinationVariable String chatID,
+  public void sendMessage(@DestinationVariable String chatID,
                                      @Payload MessageRequest message) {
-    System.out.println(message);
-    return messageService.sendMessage(chatID, message).getBody();
+    messageService.sendMessage(chatID, message);
   }
 }

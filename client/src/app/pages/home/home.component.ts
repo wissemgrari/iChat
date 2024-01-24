@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { HomeService } from './home.service';
 import { StorageService } from 'src/app/auth/storage.service';
 import { Chat, User } from 'types/global-types';
@@ -8,7 +8,8 @@ import { Chat, User } from 'types/global-types';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  private chats: Chat[] | null = null;
+
+  private chats!: Chat[] | null;
   private user: User | null;
 
   getChats(): Chat[] {
@@ -21,27 +22,25 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private homeService: HomeService,
-    private storageService: StorageService
+    private storageService: StorageService,
   ) {
     this.user = storageService.getUser();
   }
 
   ngOnInit() {
-
-    // Try to get chats from local storage
+    this.fetchChats();
     this.chats = this.storageService.getChats();
+  }
 
-    // If chats are not available in local storage, fetch them
-    if (!this.chats) {
-      this.homeService.fetchChats().subscribe({
-        next: ({ chats }) => {
-          this.chats = chats;
-          this.storageService.saveChats(chats);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-    }
+  fetchChats() {
+    this.homeService.fetchChats().subscribe({
+      next: ({ chats }) => {
+        this.chats = chats;
+        this.storageService.setChats(chats);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

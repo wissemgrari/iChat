@@ -3,9 +3,8 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'chat-message',
   template: `
-    <div>
       <div
-        class="p-3 min-w-[70px] max-w-[220px] w-max rounded-lg text-sm"
+        class="p-3 min-w-[70px] max-w-[220px] w-max rounded-lg text-sm animate-fadeIn"
         [ngClass]="{
           sent: type === 'sent',
           received: type === 'received'
@@ -14,13 +13,12 @@ import { Component, Input } from '@angular/core';
         <p>{{ text }}</p>
       </div>
       <span
-        class="flex text-[10px] text-light/80 p-1"
+        class="flex text-[10px] text-light/80 p-1 animate-fadeIn"
         [ngStyle]="{
           'justify-content': type === 'sent' ? 'flex-start' : 'flex-end'
         }"
         >{{ formatDate(date) }}</span
       >
-    </div>
   `,
   styles: [
     `

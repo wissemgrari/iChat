@@ -17,7 +17,8 @@ export class AuthService {
   constructor(
     private storageService: StorageService,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   private API_URL = environment.apiUrl;
   private user: User | null = this.storageService.getUser();
