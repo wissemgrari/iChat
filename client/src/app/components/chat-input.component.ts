@@ -41,6 +41,6 @@ export class ChatInputComponent {
     event.preventDefault();
     if (this.messageForm.invalid) return;
     this.sendMessage.emit(this.messageForm.value.message as string)
-    this.messageForm.value.message = '';
+    this.messageForm.reset()
   }
 }
