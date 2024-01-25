@@ -26,7 +26,8 @@ import { ChatInputComponent } from './components/chat-input.component';
 import { ChatMessageComponent } from './components/chat-message.component';
 import { NotFound } from './pages/notfound/notfound.component';
 import { HttpRequestInterceptor } from './utils/http.interceptor';
-import { StompService } from './ws/stomp.service';
+import { RxStompService } from './rx/rx-stomp.service';
+import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
 
 @NgModule({
   declarations: [
@@ -62,8 +63,11 @@ import { StompService } from './ws/stomp.service';
         multi: true,
       },
     ],
-    provideRouter(routes, withComponentInputBinding()),
-    StompService
+    {
+      provide: RxStompService,
+      useFactory: rxStompServiceFactory,
+    },
+    provideRouter(routes, withComponentInputBinding())
   ],
   bootstrap: [AppComponent],
 })
