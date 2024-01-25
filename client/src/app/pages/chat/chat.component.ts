@@ -59,6 +59,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.fetchMessages();
+    this.rxStompService.watch(
+      `/chat/queue/${this.id}/messages`).subscribe((payload) => {
+        this.handleMessages(payload)
+      })
   }
 
   fetchMessages() {
@@ -67,20 +71,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.user = user;
         this.participant = participant;
         this.messages = messages;
-        this.rxStompService.watch(
-          `/user/${this.user?.id}/queue/messages`).subscribe((payload) => {
-            console.log("******* payload here *********")
-            console.log(payload)
-            this.onMessageReceived(payload)
-          })
-        
-        this.rxStompService.watch(
-          `/user/${this.user?.id}/sent/messages`).subscribe((payload: any) => {
-            console.log("******* Another payload here *********")
-            console.log(payload)
-            this.onMessageSent(payload)
-          })
-        
       },
       error: (error) => {
         console.log(error);
@@ -100,13 +90,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.scrollBottom()
   }
 
-  onMessageReceived(payload: any) {
+  handleMessages(payload: any) {
     const data: Message = JSON.parse(payload.body);
     this.messages.push(data);
   }
 
-  onMessageSent(payload: any) {
-    const data: Message = JSON.parse(payload.body);
-    this.messages.push(data);
-  }
 }

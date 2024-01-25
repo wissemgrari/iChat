@@ -125,17 +125,8 @@ public class MessageService {
       
       Message response = messageRepository.save(newMessage);
       
-      // get the recipient object
-      Long recipientID = message.recipientID();
-      User recipient = userRepository.findById(recipientID).orElse(null);
-      
-      // inform the recipient with the new message
-      messagingTemplate.convertAndSendToUser(recipient.getId().toString(),
-        "/queue/messages", new MessageResponseMapper().apply(response));
-      
-      // return the message data to the sender
-      messagingTemplate.convertAndSendToUser(user.getId().toString(),
-        "/sent/messages", new MessageResponseMapper().apply(response));
+      messagingTemplate.convertAndSend("/chat/queue/" + chatID + "/messages",
+        new MessageResponseMapper().apply(response));
       
     }
     catch (Exception e) {
