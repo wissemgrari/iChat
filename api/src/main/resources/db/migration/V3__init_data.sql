@@ -10,8 +10,11 @@ INSERT INTO users (id, first_name, last_name, email, password)
 VALUES (nextval('user_sequence'), 'Jean', 'Doe', 'jeandoe@gmail.com',
         '$2a$10$SV0XckOh0A.syt0ycUYrKe3v.FuhleZJJ6El8sI7iH.QdEymFw0um');
 INSERT INTO users (id, first_name, last_name, email, password)
-VALUES (nextval('user_sequence'), 'Sarah', 'Smith', 'sarahsmith@gmail.com',
-        '$2a$10$pF1pxa3J0Z98gNkCBZMW5.uDW55hQmy27cQwHm2/ZRaGWEVf/gO3O');
+VALUES (nextval('user_sequence'), 'Elon', 'Musk', 'elonmusk@gmail.com',
+        '$2a$10$txXOTPku6GMUIIP8G9.0H.9hpKBCvk3rdvavKxTNALVDei8mOqbSC');
+INSERT INTO users (id, first_name, last_name, email, password)
+VALUES (nextval('user_sequence'), 'Djo', 'Hidouri', 'djohidouri1920@gmail.com',
+        '$2a$10$FHzV3C4Vj.G//9QTXP8bKOjkrx6RQLAKWVzrK1.Fs9tm.wRU.hbqq');
 
 -- ************************************************************************************************************* --
 
@@ -27,7 +30,7 @@ INSERT INTO chats (id, created_at)
 VALUES (nextval('chat_sequence'), '2024-01-24 20:31:38.132443');
 
 INSERT INTO user_chat (chat_id, user_id, participant_id)
-VALUES (2, 2, 3);
+VALUES (2, 4, 5);
 
 -- ************************************************************************************************************* --
 INSERT INTO messages (id, chat_id, user_id, content, created_at, status)

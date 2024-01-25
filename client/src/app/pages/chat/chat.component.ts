@@ -8,8 +8,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from './chat.service';
 import { Message, User } from 'types/global-types';
-import { StompService } from 'src/app/ws/stomp.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { RxStompService } from 'src/app/rx/rx-stomp.service';
 
 @Component({
   selector: 'app-chat',
@@ -38,7 +38,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     private route: ActivatedRoute,
     private chatService: ChatService,
     private authService: AuthService,
-    private stomp: StompService
+    private rxStompService: RxStompService
   ) {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id') ?? '';
@@ -67,14 +67,20 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.user = user;
         this.participant = participant;
         this.messages = messages;
-        this.stomp.subscribe(
-          `/user/${this.user?.id}/queue/messages`,
-          (payload: any) => this.onMessageReceived(payload)
-        );
-        this.stomp.subscribe(
-          `/user/${this.user?.id}/sent/messages`,
-          (payload: any) => this.onMessageSent(payload)
-        );
+        this.rxStompService.watch(
+          `/user/${this.user?.id}/queue/messages`).subscribe((payload) => {
+            console.log("******* payload here *********")
+            console.log(payload)
+            this.onMessageReceived(payload)
+          })
+        
+        this.rxStompService.watch(
+          `/user/${this.user?.id}/sent/messages`).subscribe((payload: any) => {
+            console.log("******* Another payload here *********")
+            console.log(payload)
+            this.onMessageSent(payload)
+          })
+        
       },
       error: (error) => {
         console.log(error);

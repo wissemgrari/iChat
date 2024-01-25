@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { environment } from 'environment';
 import { Observable } from 'rxjs';
-import { StompService } from 'src/app/ws/stomp.service';
+import { RxStompService } from 'src/app/rx/rx-stomp.service';
 import { MessageRequest } from 'types/global-types';
 
 const httpOptions = {
@@ -15,7 +15,10 @@ const httpOptions = {
 export class ChatService implements OnInit {
   private API_URL = environment.apiUrl;
 
-  constructor(private http: HttpClient, private stomp: StompService) {}
+  constructor(
+    private http: HttpClient,
+    private rxStompService: RxStompService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -24,10 +27,9 @@ export class ChatService implements OnInit {
   }
 
   sendMessage(request: MessageRequest) {
-    this.stomp.send(
-      `/app/${request.chatID}/send`,
-      {},
-      JSON.stringify(request.message)
-    );
+    this.rxStompService.publish({
+      destination: `/app/${request.chatID}/send`,
+      body: JSON.stringify(request.message),
+    });
   }
 }

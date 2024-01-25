@@ -18,11 +18,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
       .withSockJS();
   }
   
+  
+  
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.setApplicationDestinationPrefixes("/app");
     registry.enableSimpleBroker("/user");
     registry.setUserDestinationPrefix("/user");
   }
-
+  
 }
