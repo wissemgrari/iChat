@@ -4,32 +4,31 @@ import { User } from 'types/global-types';
 @Component({
   selector: 'avatar',
   template: `
-    <div class="flex flex-col items-center gap-1">
-      <img
-        *ngIf="user?.imageURL"
-        class="w-12 rounded-full border-2"
-        [src]="user?.imageURL"
-        alt="avatar"
-      />
-      <div
-        class="w-12 h-12 flex justify-center items-center"
-        [style.backgroundColor]="avatarBG"
-        [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"
-        [style.border]="style == 'circle' ? '2px solid #ccc' : 'none'"
-      >
-        <span class="uppercase text-sm font-medium text-white">
-          {{ getInitials() }}
-        </span>
+      <div class="flex flex-col items-center gap-1">
+        <img
+          *ngIf="user?.imageURL"
+          class="w-12 h-12 rounded-full border-2"
+          [src]="user?.imageURL"
+          alt="avatar"
+        />
+        <div
+          class="w-12 h-12 flex justify-center items-center"
+          [style.backgroundColor]="avatarBG"
+          [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"
+          [style.border]="style == 'circle' ? '2px solid #ccc' : 'none'"
+        >
+          <span class="uppercase text-sm font-medium text-white">
+            {{ getInitials() }}
+          </span>
+        </div>
       </div>
-    </div>
   `,
 })
 export class AvatarComponent {
-
-  avatarBG: string = ""
+  avatarBG: string = '';
 
   @Input() user!: User | null;
-  @Input() style: 'circle' | 'square' = 'circle'
+  @Input() style: 'circle' | 'square' = 'circle';
 
   getInitials(): string {
     if (this.user && this.user.firstName && this.user.lastName) {
@@ -59,14 +58,12 @@ export class AvatarComponent {
     '#b4924c',
   ];
 
-
   getRandomColor(): string {
     const randomIndex = Math.floor(Math.random() * this.colors.length);
     return this.colors[randomIndex];
   }
 
   ngOnInit() {
-    this.avatarBG = this.getRandomColor()
+    this.avatarBG = this.getRandomColor();
   }
-
 }

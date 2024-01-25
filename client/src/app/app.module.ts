@@ -28,25 +28,27 @@ import { NotFound } from './pages/notfound/notfound.component';
 import { HttpRequestInterceptor } from './utils/http.interceptor';
 import { RxStompService } from './rx/rx-stomp.service';
 import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
+import { DropDownComponent } from './components/dropdown';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    HomeComponent,
-    ChatComponent,
-    ButtonComponent,
-    InputComponent,
     AvatarComponent,
-    SearchbarComponent,
-    ChatListComponent,
-    ChatItemComponent,
-    FloatButtonComponent,
-    ChatHeaderComponent,
-    ChatMessagesComponent,
+    ButtonComponent,
     ChatInputComponent,
     ChatMessageComponent,
+    ChatListComponent,
+    ChatHeaderComponent,
+    ChatMessagesComponent,
+    ChatItemComponent,
+    ChatComponent,
+    DropDownComponent,
+    FloatButtonComponent,
+    HomeComponent,
+    InputComponent,
+    LoginComponent,
     NotFound,
+    SearchbarComponent,
   ],
   imports: [
     BrowserModule,
