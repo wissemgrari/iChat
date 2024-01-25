@@ -4,7 +4,7 @@ import { User } from 'types/global-types';
 @Component({
   selector: 'avatar',
   template: `
-      <div class="flex flex-col items-center gap-1">
+      <div class="flex flex-col items-center gap-1 cursor-pointer">
         <img
           *ngIf="user?.imageURL"
           class="w-12 h-12 rounded-full border-2"
