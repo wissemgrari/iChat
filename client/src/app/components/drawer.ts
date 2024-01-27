@@ -29,7 +29,8 @@ export class Drawer {
 
   toggleDrawer(): void {
     this.isDrawerOpen = !this.isDrawerOpen;
-    this.mainWrapper?.classList.toggle('brightness-[20%]');
+    this.mainWrapper?.classList.toggle('overlay');
     this.drawer?.classList.toggle('drawer-visible');
   }
+
 }

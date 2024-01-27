@@ -23,3 +23,7 @@
 .drawer-visible {
   @apply bottom-0;
 }
+
+.overlay {
+  @apply brightness-[20%] pointer-events-none;
+}
