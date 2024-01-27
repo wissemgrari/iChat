@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-button',
+  selector: 'Button',
   template: `
     <button
     type="{{ type }}"
@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         primary: variant === 'primary',
         secondary: variant === 'secondary'
       }"
-      (click)="onClick()"
+      (click)="click()"
       class="primary w-full font-semibold px-5 py-3 rounded flex items-center justify-center gap-2 hover:opacity-80 hover:scale-[95%] transition duration-300"
     >
       <img class="w-6" src="{{ icon }}" alt="btn-icon" *ngIf="icon" />
@@ -32,9 +32,9 @@ export class ButtonComponent {
   @Input() type: string = "button";
   @Input() icon!: string;
   @Input() variant: string = 'primary';
-  @Output() btnClick = new EventEmitter();
+  @Output() onClick = new EventEmitter();
 
-  onClick() {
-    this.btnClick.emit();
+  click() {
+    this.onClick.emit();
   }
 }

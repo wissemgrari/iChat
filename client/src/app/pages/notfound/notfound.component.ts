@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
         </h1>
       </div>
       <a class="w-full" routerLink="/">
-        <app-button class="w-full" text="GO HOME"></app-button>
+        <Button class="w-full" text="GO HOME"></Button>
       </a>
     </div>
   `,

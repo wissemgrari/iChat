@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from 'types/global-types';
 
 @Component({
   selector: 'avatar',
   template: `
-      <div class="flex flex-col items-center gap-1 cursor-pointer">
+      <div (click)="click()" class="flex flex-col items-center gap-1 cursor-pointer">
         <img
           *ngIf="user?.imageURL"
           class="w-12 h-12 rounded-full border-2"
@@ -29,6 +29,12 @@ export class AvatarComponent {
 
   @Input() user!: User | null;
   @Input() style: 'circle' | 'square' = 'circle';
+
+  @Output() onClick = new EventEmitter();
+
+  click() {
+    this.onClick.emit();
+  }
 
   getInitials(): string {
     if (this.user && this.user.firstName && this.user.lastName) {

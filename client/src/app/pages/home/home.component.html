@@ -1,7 +1,7 @@
 <div class="w-full h-full flex flex-col text-white gap-y-2 py-10">
   <div class="flex items-center justify-between">
     <h1 class="text-3xl select-none">Messages</h1>
-    <avatar [user]="getUser()" />
+    <avatar [user]="getUser()" (onClick)="toggleDrawer()" />
   </div>
   <searchbar class="mt-10"></searchbar>
   <chat-list [chats]="getChats()" class="mt-10"></chat-list>

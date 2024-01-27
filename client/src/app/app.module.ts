@@ -29,6 +29,7 @@ import { HttpRequestInterceptor } from './utils/http.interceptor';
 import { RxStompService } from './rx/rx-stomp.service';
 import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
 import { DropDownComponent } from './components/dropdown';
+import { Drawer } from './components/drawer'
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { DropDownComponent } from './components/dropdown';
     ChatMessagesComponent,
     ChatItemComponent,
     ChatComponent,
+    Drawer,
     DropDownComponent,
     FloatButtonComponent,
     HomeComponent,

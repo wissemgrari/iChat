@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { HomeService } from './home.service';
 import { StorageService } from 'src/app/auth/storage.service';
 import { Chat, User } from 'types/global-types';
+import { Drawer } from 'src/app/components/drawer';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private homeService: HomeService,
     private storageService: StorageService,
+    private drawer: Drawer
   ) {
     this.user = storageService.getUser();
   }
@@ -43,4 +45,9 @@ export class HomeComponent implements OnInit {
       },
     });
   }
+
+  toggleDrawer(): void {
+    this.drawer.toggleDrawer()
+  }
+
 }
