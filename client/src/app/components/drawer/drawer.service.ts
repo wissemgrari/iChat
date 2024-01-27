@@ -24,6 +24,7 @@ export class DrawerService {
     this.isDrawerOpen = true;
     this.drawerElement.nativeElement.classList.add('drawer-visible');
     this.mainElement.nativeElement.classList.add('overlay');
+    this.mainElement.nativeElement.classList.add('scale-[95%]');
 
     // Add event listener to close drawer when clicking outside
     document.body.addEventListener('click', this.handleClickOutside);
@@ -33,6 +34,7 @@ export class DrawerService {
     this.isDrawerOpen = false;
     this.drawerElement.nativeElement.classList.remove('drawer-visible');
     this.mainElement.nativeElement.classList.remove('overlay');
+    this.mainElement.nativeElement.classList.remove('scale-[95%]');
 
     // Remove event listener when drawer is closed
     document.body.removeEventListener('click', this.handleClickOutside);
