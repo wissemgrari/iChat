@@ -4,24 +4,27 @@ import { User } from 'types/global-types';
 @Component({
   selector: 'avatar',
   template: `
-      <div (click)="click()" class="flex flex-col items-center gap-1 cursor-pointer hover:brightness-75 hover:scale-90 transition-all duration-300">
-        <img
-          *ngIf="user?.imageURL"
-          class="w-12 h-12 rounded-full border-2"
-          [src]="user?.imageURL"
-          alt="avatar"
-        />
-        <div
-          class="w-12 h-12 flex justify-center items-center"
-          [style.backgroundColor]="avatarBG"
-          [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"
-          [style.border]="style == 'circle' ? '2px solid #ccc' : 'none'"
-        >
-          <span class="uppercase text-sm font-medium text-white">
-            {{ getInitials() }}
-          </span>
-        </div>
+    <div
+      (click)="click()"
+      class="flex flex-col items-center gap-1 cursor-pointer hover:brightness-75 hover:scale-90 transition-all duration-300"
+    >
+      <img
+        *ngIf="user?.imageURL"
+        class="w-12 h-12 rounded-full border-2"
+        [src]="user?.imageURL"
+        alt="avatar"
+      />
+      <div
+        class="w-12 h-12 flex justify-center items-center"
+        [style.backgroundColor]="avatarBG"
+        [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"
+        [style.border]="style == 'circle' ? '2px solid #ccc' : 'none'"
+      >
+        <span class="uppercase text-sm font-medium text-white">
+          {{ getInitials() }}
+        </span>
       </div>
+    </div>
   `,
 })
 export class AvatarComponent {
