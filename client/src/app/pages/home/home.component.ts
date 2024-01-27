@@ -1,15 +1,14 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HomeService } from './home.service';
 import { StorageService } from 'src/app/auth/storage.service';
 import { Chat, User } from 'types/global-types';
-import { Drawer } from 'src/app/components/drawer';
+import { DrawerService } from 'src/app/components/drawer/drawer.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-
   private chats!: Chat[] | null;
   private user: User | null;
 
@@ -24,7 +23,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private homeService: HomeService,
     private storageService: StorageService,
-    private drawer: Drawer
+    private drawerService: DrawerService
   ) {
     this.user = storageService.getUser();
   }
@@ -46,8 +45,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  toggleDrawer(): void {
-    this.drawer.toggleDrawer()
+  showDrawer() {
+    this.drawerService.showDrawer()
   }
 
 }

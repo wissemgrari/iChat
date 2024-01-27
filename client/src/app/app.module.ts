@@ -29,7 +29,8 @@ import { HttpRequestInterceptor } from './utils/http.interceptor';
 import { RxStompService } from './rx/rx-stomp.service';
 import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
 import { DropDownComponent } from './components/dropdown';
-import { Drawer } from './components/drawer'
+import { Drawer } from './components/drawer/drawer';
+import { ClickStopPropagation } from './directives/click-stop-propagation.directive';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { Drawer } from './components/drawer'
     LoginComponent,
     NotFound,
     SearchbarComponent,
+    ClickStopPropagation
   ],
   imports: [
     BrowserModule,
