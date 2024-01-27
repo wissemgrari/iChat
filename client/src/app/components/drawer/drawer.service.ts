@@ -6,8 +6,8 @@ import { Drawer } from './drawer';
 })
 export class DrawerService {
   isDrawerOpen: boolean = false;
+  drawerElement!: ElementRef;
   private drawer!: Drawer;
-  private drawerElement!: ElementRef;
   private mainElement!: ElementRef;
 
   setDrawer(
@@ -48,4 +48,5 @@ export class DrawerService {
       this.hideDrawer();
     }
   };
+
 }

@@ -52,7 +52,7 @@ import { ClickStopPropagation } from './directives/click-stop-propagation.direct
     LoginComponent,
     NotFound,
     SearchbarComponent,
-    ClickStopPropagation
+    ClickStopPropagation,
   ],
   imports: [
     BrowserModule,

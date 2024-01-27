@@ -6,7 +6,10 @@ import { DrawerService } from './components/drawer/drawer.service';
   selector: 'app-root',
   template: `
     <main class="bg-dark">
-      <div #main class="relative h-[100dvh] w-full max-w-sm mx-auto px-3 transition-all duration-200">
+      <div
+        #main
+        class="relative h-[100dvh] w-full max-w-sm mx-auto px-3 transition-all duration-200"
+      >
         <router-outlet></router-outlet>
       </div>
       <drawer class="drawer" #drawer></drawer>
@@ -21,6 +24,10 @@ export class AppComponent {
   constructor(private drawerService: DrawerService) {}
 
   ngAfterViewInit() {
-    this.drawerService.setDrawer(this.drawer, this.drawerElement, this.mainElement);
+    this.drawerService.setDrawer(
+      this.drawer,
+      this.drawerElement,
+      this.mainElement
+    );
   }
 }
