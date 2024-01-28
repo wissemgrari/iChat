@@ -5,10 +5,16 @@ import { Drawer } from './drawer';
   providedIn: 'root',
 })
 export class DrawerService {
-  isDrawerOpen: boolean = false;
+  isDrawerOpen = false;
+  isDragging = false;
   drawerElement!: ElementRef;
   private drawer!: Drawer;
   private mainElement!: ElementRef;
+  private threshold = 150;
+  private dragStartY = 0;
+  private animationFrameId = 0;
+
+  constructor() {}
 
   setDrawer(
     drawer: Drawer,
@@ -21,32 +27,83 @@ export class DrawerService {
   }
 
   showDrawer() {
+    if (!this.drawerElement || !this.mainElement) return;
+
     this.isDrawerOpen = true;
     this.drawerElement.nativeElement.classList.add('drawer-visible');
     this.mainElement.nativeElement.classList.add('overlay');
     this.mainElement.nativeElement.classList.add('scale-[95%]');
 
-    // Add event listener to close drawer when clicking outside
     document.body.addEventListener('click', this.handleClickOutside);
+
+    document
+      .getElementById('drawer-handler')
+      ?.addEventListener('mousedown', this.mouseDown);
+    this.drawerElement.nativeElement.addEventListener('mouseup', this.mouseUp);
+    this.drawerElement.nativeElement.addEventListener(
+      'mousemove',
+      this.mouseMove
+    );
   }
 
   hideDrawer() {
+    if (!this.drawerElement || !this.mainElement) return;
+
     this.isDrawerOpen = false;
-    this.drawerElement.nativeElement.classList.remove('drawer-visible');
+    this.isDragging = false;
     this.mainElement.nativeElement.classList.remove('overlay');
     this.mainElement.nativeElement.classList.remove('scale-[95%]');
+    this.drawerElement.nativeElement.classList.remove('drawer-visible');
 
-    // Remove event listener when drawer is closed
     document.body.removeEventListener('click', this.handleClickOutside);
+
+    document
+      .getElementById('drawer-handler')
+      ?.removeEventListener('mousedown', this.mouseDown);
+    this.drawerElement.nativeElement.removeEventListener(
+      'mouseup',
+      this.mouseUp
+    );
+    this.drawerElement.nativeElement.removeEventListener(
+      'mousemove',
+      this.mouseMove
+    );
   }
 
   private handleClickOutside = (event: MouseEvent) => {
     if (
-      !this.drawerElement.nativeElement.contains(event.target) &&
-      this.drawerElement.nativeElement.classList.contains('drawer-visible')
+      !this.drawerElement?.nativeElement.contains(event.target) &&
+      this.drawerElement?.nativeElement.classList.contains('drawer-visible')
     ) {
       this.hideDrawer();
     }
   };
 
+  private mouseDown = (event: MouseEvent) => {
+    this.isDragging = true;
+    this.dragStartY = event.clientY;
+  };
+
+  private mouseUp = (event: MouseEvent) => {
+    this.isDragging = false;
+  };
+
+  private mouseMove = (event: MouseEvent) => {
+    if (!this.drawerElement) return;
+
+    let mouseY = event.clientY;
+    const deltaY = mouseY - this.dragStartY;
+    if (this.isDragging) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = requestAnimationFrame(() => {
+        this.drawerElement.nativeElement.style.top = `${mouseY}px`;
+        if (deltaY > this.threshold) {
+          this.hideDrawer();
+          this.drawerElement.nativeElement.removeAttribute('style');
+        }
+      });
+    } else {
+      this.drawerElement.nativeElement.removeAttribute('style');
+    }
+  };
 }
