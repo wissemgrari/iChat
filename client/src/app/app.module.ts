@@ -1,36 +1,36 @@
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import {
   RouterModule,
   provideRouter,
   withComponentInputBinding,
 } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routes } from './routes';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './pages/login/login.component';
-import { HomeComponent } from './pages/home/home.component';
-import { ChatComponent } from './pages/chat/chat.component';
-import { ButtonComponent } from './components/button';
-import { InputComponent } from './components/input';
 import { AvatarComponent } from './components/avatar';
-import { SearchbarComponent } from './components/searchbar';
-import { ChatListComponent } from './components/chat-list';
-import { ChatItemComponent } from './components/chat-item';
-import { FloatButtonComponent } from './components/float-button';
+import { ButtonComponent } from './components/button';
 import { ChatHeaderComponent } from './components/chat-header';
-import { ChatMessagesComponent } from './components/chat-messages';
 import { ChatInputComponent } from './components/chat-input';
+import { ChatItemComponent } from './components/chat-item';
+import { ChatListComponent } from './components/chat-list';
 import { ChatMessageComponent } from './components/chat-message';
-import { NotFound } from './pages/notfound/notfound.component';
-import { HttpRequestInterceptor } from './utils/http.interceptor';
-import { RxStompService } from './rx/rx-stomp.service';
-import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
-import { DropDownComponent } from './components/dropdown';
+import { ChatMessagesComponent } from './components/chat-messages';
 import { Drawer } from './components/drawer/drawer';
+import { DropDownComponent } from './components/dropdown';
+import { FloatButtonComponent } from './components/float-button';
+import { InputComponent } from './components/input';
+import { SearchbarComponent } from './components/searchbar';
 import { ClickStopPropagation } from './directives/click-stop-propagation.directive';
+import { ChatComponent } from './pages/chat/chat.component';
+import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './pages/login/login.component';
+import { NotFound } from './pages/notfound/notfound.component';
+import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
+import { RxStompService } from './rx/rx-stomp.service';
+import { HttpRequestInterceptor } from './utils/http.interceptor';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import { ClickStopPropagation } from './directives/click-stop-propagation.direct
     LoginComponent,
     NotFound,
     SearchbarComponent,
-    ClickStopPropagation
+    ClickStopPropagation,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +73,7 @@ import { ClickStopPropagation } from './directives/click-stop-propagation.direct
       provide: RxStompService,
       useFactory: rxStompServiceFactory,
     },
-    provideRouter(routes, withComponentInputBinding())
+    provideRouter(routes, withComponentInputBinding()),
   ],
   bootstrap: [AppComponent],
 })
