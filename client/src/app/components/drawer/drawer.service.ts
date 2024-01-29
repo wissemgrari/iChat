@@ -10,7 +10,7 @@ export class DrawerService {
   drawerElement!: ElementRef;
   private drawer!: Drawer;
   private mainElement!: ElementRef;
-  private threshold = 50;
+  private threshold = 80;
   private dragStartY = 0;
   private animationFrameId = 0;
 
