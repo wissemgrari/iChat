@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'types/global-types';
 import { DrawerService } from './drawer.service';
+import { StorageService } from 'src/app/auth/storage.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'drawer',
@@ -16,15 +18,15 @@ import { DrawerService } from './drawer.service';
       >
         <span class="block w-24 h-[6px] bg-grey/40 rounded-full"></span>
       </div>
-      <div class="flex-1 text-white divide-y divide-grey/20">
+      <div *ngIf="user" class="flex-1 text-white divide-y divide-grey/20">
         <div class="flex items-center px-5 pt-2 pb-10 gap-x-3">
           <avatar [style]="'square'" [size]="'lg'" [user]="user" />
           <div class="flex flex-col gap-y-1">
             <div class="flex gap-x-1">
-              <p>{{ user?.firstName }}</p>
-              <p>{{ user?.lastName }}</p>
+              <p>{{ user.firstName }}</p>
+              <p>{{ user.lastName }}</p>
             </div>
-            <p class="text-xs text-light/70">{{ user?.email }}</p>
+            <p class="text-xs text-light/70">{{ user.email }}</p>
             <p
               class="text-xs text-light/50 flex items-center gap-x-1 animate-pulse"
             >
@@ -61,16 +63,28 @@ import { DrawerService } from './drawer.service';
     </div>
   `,
 })
-export class Drawer {
+export class Drawer implements OnInit {
   user!: User | null;
-  userDataLoaded = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
+    private storageService: StorageService,
     private drawer: DrawerService
-  ) {
-    this.user = this.authService.getUser();
+  ) {}
+
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.refreshUser();
+    });
+  }
+  
+  private refreshUser(): void {
+    if (this.router.url === '/') { // Check if the current route is "/"
+      this.user = this.storageService.getUser(); // Update user data
+    }
   }
 
   handleLogout(): void {
