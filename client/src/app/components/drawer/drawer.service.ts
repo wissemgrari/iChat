@@ -44,6 +44,7 @@ export class DrawerService {
       'mousemove',
       this.mouseMove
     );
+    document.addEventListener('mousemove', this.globalMouseMove);
   }
 
   hideDrawer() {
@@ -68,12 +69,14 @@ export class DrawerService {
       'mousemove',
       this.mouseMove
     );
+    document.removeEventListener('mousemove', this.globalMouseMove);
   }
 
   private handleClickOutside = (event: MouseEvent) => {
     if (
       !this.drawerElement?.nativeElement.contains(event.target) &&
-      this.drawerElement?.nativeElement.classList.contains('drawer-visible')
+      this.drawerElement?.nativeElement.classList.contains('drawer-visible') &&
+      !this.isDragging
     ) {
       this.hideDrawer();
     }
@@ -93,6 +96,7 @@ export class DrawerService {
 
     let mouseY = event.clientY;
     const deltaY = mouseY - this.dragStartY;
+
     if (this.isDragging) {
       cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = requestAnimationFrame(() => {
@@ -104,6 +108,17 @@ export class DrawerService {
       });
     } else {
       this.drawerElement.nativeElement.removeAttribute('style');
+    }
+  };
+
+  private globalMouseMove = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (this.isDragging && !target.closest('#drawer-handler')) {
+      if (this.isDrawerOpen) {
+        cancelAnimationFrame(this.animationFrameId);
+        this.hideDrawer();
+        this.drawerElement.nativeElement.removeAttribute('style');
+      }
     }
   };
 }
