@@ -4,13 +4,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'Button',
   template: `
     <button
-    type="{{ type }}"
+      [type]="type"
       [ngClass]="{
         primary: variant === 'primary',
         secondary: variant === 'secondary'
       }"
       (click)="click()"
-      class="primary w-full font-semibold px-5 py-3 rounded flex items-center justify-center gap-2 hover:opacity-80 hover:scale-[95%] transition duration-300 "
+      [disabled]="disabled"
+      class="primary w-full font-semibold px-5 py-3 rounded flex items-center justify-center gap-2 disabled:opacity-20 disabled:cursor-not-allowed disabled:scale-100 hover:opacity-80 hover:scale-[95%] transition duration-300"
     >
       <img class="w-6" src="{{ icon }}" alt="btn-icon" *ngIf="icon" />
       <span class="capitalize">{{ text }}</span>
@@ -29,9 +30,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() text!: string;
-  @Input() type: string = "button";
+  @Input() type: string = 'button';
   @Input() icon!: string;
   @Input() variant: string = 'primary';
+  @Input() disabled: boolean = false;
   @Output() onClick = new EventEmitter();
 
   click() {

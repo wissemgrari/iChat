@@ -1,14 +1,22 @@
 import {
   Component,
+  ElementRef,
   Input,
   ViewChild,
-  ElementRef,
   forwardRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => InputComponent),
+  multi: true,
+};
+
 @Component({
   selector: 'app-input',
+  host: { '(blur)': 'onTouched($event)' },
+  providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR],
   template: `
     <div
       class="relative w-full rounded-md border-2 border-transparent focus-within:border-grey transition-all duration-200"
@@ -17,9 +25,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         type="{{ type }}"
         [(ngModel)]="value"
         (input)="onInput($event)"
+        (blur)="onTouched($event)"
         #input
         class="block px-6 pt-6 pb-1 w-full text-white text-base bg-lightDark appearance-none focus:outline-none focus:ring-0 peer"
         placeholder=" "
+        required
       />
       <label
         (click)="focus()"
@@ -29,41 +39,43 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       </label>
     </div>
   `,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => InputComponent),
-    },
-  ],
 })
 export class InputComponent implements ControlValueAccessor {
-
   @Input() type: string = 'text';
   @Input() label!: string;
-  value: string = '';
+  private _value: any = '';
 
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
 
-  // ControlValueAccessor methods
-  private onChange: (_: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  public onChange: any = (_: any) => {};
+  public onTouched: any = () => {};
 
-  writeValue(value: any): void {
-    this.value = value;
+  get value(): any {
+    return this._value;
   }
 
-  registerOnChange(fn: (_: any) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
+  set value(v: any) {
+    if (v !== this._value) {
+      this._value = v;
+      this.onChange(v);
+    }
   }
 
   onInput(event: Event): void {
-    this.value = (event.target as HTMLInputElement).value;
-    this.onChange(this.value);
+    this._value = (event.target as HTMLInputElement).value;
+    this.onChange(this._value);
+  }
+
+  writeValue(value: any) {
+    this._value = value;
+  }
+
+  registerOnChange(fn: any) {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any) {
+    this.onTouched = fn;
   }
 
   focus() {
