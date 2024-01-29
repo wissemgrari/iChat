@@ -5,6 +5,7 @@ import { User } from 'types/global-types';
   selector: 'avatar',
   template: `
     <div
+      [id]="id"
       (click)="click()"
       class="flex flex-col items-center gap-1 cursor-pointer hover:brightness-75 hover:scale-90 transition-all duration-300 "
     >
@@ -13,14 +14,18 @@ import { User } from 'types/global-types';
         class="w-12 h-12 rounded-full border-2"
         [src]="user?.imageURL"
         alt="avatar"
+        [style.width]="size === 'sm' ? '3rem' : '4rem'"
+        [style.height]="size === 'sm' ? '3rem' : '4rem'"
       />
       <div
         class="w-12 h-12 flex justify-center items-center"
         [style.backgroundColor]="avatarBG"
         [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"
         [style.border]="style == 'circle' ? '2px solid #ccc' : 'none'"
+        [style.width]="size === 'sm' ? '3rem' : '4rem'"
+        [style.height]="size === 'sm' ? '3rem' : '4rem'"
       >
-        <span class="uppercase text-sm font-medium text-white">
+        <span class="uppercase text-base font-medium text-white">
           {{ getInitials() }}
         </span>
       </div>
@@ -32,6 +37,8 @@ export class AvatarComponent {
 
   @Input() user!: User | null;
   @Input() style: 'circle' | 'square' = 'circle';
+  @Input() size?: 'sm' | 'lg' = 'sm';
+  @Input() id?: string;
 
   @Output() onClick = new EventEmitter();
 
@@ -59,7 +66,6 @@ export class AvatarComponent {
     '#39bbb0',
     '#03396c',
     '#3f67fa',
-    '#fbcb6d',
     '#667895',
     '#0e1d2c',
     '#7a3131',
