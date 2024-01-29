@@ -38,4 +38,10 @@ export class AuthService {
       httpOptions
     );
   }
+
+  logout(): void {
+    this.storageService.clean()
+    // TODO: handle api logout logic
+  }
+
 }
