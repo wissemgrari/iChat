@@ -37,6 +37,7 @@ import { DrawerService } from './drawer.service';
           class="bg-lightDark/50 flex justify-between items-center divide-x divide-grey/20 cursor-pointer uppercase"
         >
           <div
+            (click)="dismiss()"
             id="close-btn"
             class="py-3 w-full text-center group transition-all duration-200 hover:bg-lightDark"
           >
@@ -62,9 +63,14 @@ import { DrawerService } from './drawer.service';
 })
 export class Drawer {
   user!: User | null;
+  userDataLoaded = false;
 
-  constructor(private authService: AuthService, private router: Router, private drawer: DrawerService) {
-    this.user = authService.getUser();
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private drawer: DrawerService
+  ) {
+    this.user = this.authService.getUser();
   }
 
   handleLogout(): void {
@@ -75,5 +81,9 @@ export class Drawer {
       },
       error: (error) => console.log(error),
     });
+  }
+
+  dismiss(): void {
+    this.drawer.hideDrawer();
   }
 }
