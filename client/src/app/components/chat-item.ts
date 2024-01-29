@@ -7,7 +7,7 @@ import { AuthService } from '../auth/auth.service';
   template: `
     <div
       routerLink="/chat/{{ chat?.id }}"
-      class="flex items-center gap-3 py-5 px-2 rounded-lg cursor-pointer hover:bg-lightDark select-none transition duration-300"
+      class="flex items-center gap-3 py-5 px-2 rounded-lg cursor-pointer hover:bg-lightDark  transition duration-300"
     >
       <avatar [user]="getParticipant()" [style]="'square'" />
       <div class="flex flex-col gap-1">

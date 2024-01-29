@@ -6,7 +6,7 @@ import { User } from 'types/global-types';
   template: `
     <div
       (click)="click()"
-      class="flex flex-col items-center gap-1 cursor-pointer hover:brightness-75 hover:scale-90 transition-all duration-300 select-none"
+      class="flex flex-col items-center gap-1 cursor-pointer hover:brightness-75 hover:scale-90 transition-all duration-300 "
     >
       <img
         *ngIf="user?.imageURL"
