@@ -17,8 +17,7 @@ export class AuthService {
   constructor(
     private storageService: StorageService,
     private http: HttpClient
-  ) {
-  }
+  ) {}
 
   private API_URL = environment.apiUrl;
   private user: User | null = this.storageService.getUser();
@@ -39,9 +38,9 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-    this.storageService.clean()
-    // TODO: handle api logout logic
+  logout(): Observable<any> {
+    this.storageService.clean();
+    this.user = null;
+    return this.http.post(`${this.API_URL}/auth/logout`, httpOptions);
   }
-
 }

@@ -1,4 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 import { Drawer } from './drawer';
 
 @Injectable({
@@ -14,7 +16,7 @@ export class DrawerService {
   private dragStartY = 0;
   private animationFrameId = 0;
 
-  constructor() {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   setDrawer(
     drawer: Drawer,

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -59,6 +60,11 @@ public class SecurityConfig {
         .authenticated())
       .sessionManagement(
         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .logout(logout -> logout
+        .logoutUrl("/api/v1/auth/logout")
+        .deleteCookies("accessToken")
+        .logoutSuccessHandler(
+          (request, response, authentication) -> SecurityContextHolder.clearContext()))
       .authenticationProvider(authenticationProvider)
       .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
       .build();

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'types/global-types';
+import { DrawerService } from './drawer.service';
 
 @Component({
   selector: 'drawer',
@@ -35,6 +37,7 @@ import { User } from 'types/global-types';
           class="bg-lightDark/50 flex justify-between items-center divide-x divide-grey/20 cursor-pointer uppercase"
         >
           <div
+            id="close-btn"
             class="py-3 w-full text-center group transition-all duration-200 hover:bg-lightDark"
           >
             <span
@@ -43,6 +46,8 @@ import { User } from 'types/global-types';
             >
           </div>
           <div
+            id="logout-btn"
+            (click)="handleLogout()"
             class="py-3 w-full text-center group transition-all duration-200 hover:bg-lightDark"
           >
             <span
@@ -58,7 +63,17 @@ import { User } from 'types/global-types';
 export class Drawer {
   user!: User | null;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router, private drawer: DrawerService) {
     this.user = authService.getUser();
+  }
+
+  handleLogout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.drawer.hideDrawer();
+        this.router.navigate(['/login']);
+      },
+      error: (error) => console.log(error),
+    });
   }
 }
