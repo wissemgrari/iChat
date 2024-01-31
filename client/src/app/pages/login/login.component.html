@@ -1,8 +1,5 @@
-<form
-  [formGroup]="loginForm"
-  (submit)="login($event)"
-  class="py-10 relative w-full h-[90vh] flex flex-col items-center text-white gap-y-2"
->
+<form [formGroup]="loginForm" (submit)="login($event)"
+  class="py-10 relative w-full h-[90vh] flex flex-col items-center text-white gap-y-2">
   <h1 class="text-3xl flex items-center gap-2">
     <span>Welcome to iChat</span>
     <img src="/assets/bubble.svg" class="w-7" alt="test" />
@@ -15,52 +12,33 @@
     <!-- email -->
     <div>
       <app-input formControlName="email" label="email" />
-      <span
-        *ngIf="email?.touched && email?.errors?.['required']"
-        class="block text-xs text-red-600 pl-2 pt-1"
-      >
+      <span *ngIf="email?.touched && email?.errors?.['required']" class="block text-xs text-red-600 pl-2 pt-1">
         ● Email is required.
       </span>
-      <span
-        *ngIf="email?.dirty && email?.errors?.['minlength']"
-        class="block text-xs text-red-600 pl-2 pt-1"
-      >
+      <span *ngIf="email?.dirty && email?.errors?.['minlength']" class="block text-xs text-red-600 pl-2 pt-1">
         ● Email must be at least 10 characters long.
       </span>
-      <span
-        *ngIf="email?.dirty && email?.errors?.['maxlength']"
-        class="block text-xs text-red-600 pl-2 pt-1"
-      >
+      <span *ngIf="email?.dirty && email?.errors?.['maxlength']" class="block text-xs text-red-600 pl-2 pt-1">
         ● Email must be at most 25 characters long.
       </span>
-      <span
-      *ngIf="email?.dirty && email?.invalid"
-      class="block text-xs text-red-600 pl-2 pt-1"
-    >
-      ● Email is invalid.
-    </span>
+      <span *ngIf="email?.dirty && !email?.errors?.['required'] && email?.invalid"
+        class="block text-xs text-red-600 pl-2 pt-1">
+        ● Email is invalid.
+      </span>
     </div>
     <!-- password -->
     <div>
       <app-input formControlName="password" type="password" label="password" />
-      <span
-      *ngIf="password?.touched && password?.errors?.['required']"
-      class="block text-xs text-red-600 pl-2 pt-1"
-    >
-      ● Password is required.
-    </span>
+      <span *ngIf="password?.touched && password?.errors?.['required']" class="block text-xs text-red-600 pl-2 pt-1">
+        ● Password is required.
+      </span>
+      <span *ngIf="password?.dirty && password?.errors?.['minlength']" class="block text-xs text-red-600 pl-2 pt-1">
+        ● Password must be at least 8 characters long.
+      </span>
     </div>
-    <span
-      class="text-light text-sm text-end mt-1 mb-5 cursor-pointer hover:opacity-70 transition"
-      >forgot password ?</span
-    >
-    <Button
-      type="submit"
-      class="w-full"
-      text="login"
-      variant="secondary"
-      [disabled]="loginForm.invalid"
-    ></Button>
+    <span class="text-light text-sm text-end mt-1 mb-5 cursor-pointer hover:opacity-70 transition">forgot password
+      ?</span>
+    <Button type="submit" class="w-full" text="login" variant="secondary" [disabled]="loginForm.invalid"></Button>
   </div>
   <div class="w-full absolute bottom-0">
     <div class="text-light flex justify-center items-center gap-2 mb-5">
@@ -69,16 +47,8 @@
       <span class="inline-block h-[1px] flex-1 bg-light"></span>
     </div>
     <div class="flex flex-col gap-4">
-      <Button
-        class="w-full"
-        text="Sign in with Google"
-        icon="/assets/google.svg"
-      ></Button>
-      <Button
-        class="w-full"
-        text="Sign in with Apple ID"
-        icon="/assets/apple.svg"
-      ></Button>
+      <Button class="w-full" text="Sign in with Google" icon="/assets/google.svg"></Button>
+      <Button class="w-full" text="Sign in with Apple ID" icon="/assets/apple.svg"></Button>
     </div>
   </div>
 </form>

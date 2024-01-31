@@ -28,3 +28,8 @@
 .overlay {
   @apply brightness-[20%] pointer-events-none;
 }
+
+app-input.ng-dirty.ng-invalid > div,
+app-input.ng-touched.ng-invalid > div {
+  @apply border-2 !border-red-600;
+}
