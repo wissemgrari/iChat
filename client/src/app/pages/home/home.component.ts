@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HomeService } from './home.service';
 import { StorageService } from 'src/app/auth/storage.service';
-import { Chat, User } from 'types/global-types';
 import { DrawerService } from 'src/app/components/drawer/drawer.service';
+import { ModalService } from 'src/app/components/modal/modal.service';
+import { Chat, User } from 'types/global-types';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private homeService: HomeService,
     private storageService: StorageService,
-    private drawerService: DrawerService
+    private drawerService: DrawerService,
+    private modalService: ModalService
   ) {
     this.user = storageService.getUser();
   }
@@ -46,7 +48,10 @@ export class HomeComponent implements OnInit {
   }
 
   showDrawer() {
-    this.drawerService.showDrawer()
+    this.drawerService.showDrawer();
   }
 
+  showModal() {
+    this.modalService.showModal();
+  }
 }

@@ -5,9 +5,9 @@ import { Component, Output, EventEmitter } from '@angular/core';
   template: `
     <button
       (click)="onClick()"
-      class="absolute bottom-5 right-0 w-14 h-14 bg-lightDark flex items-center justify-center rounded-full z-0 hover:border hover:border-grey"
+      class="absolute bottom-5 right-0 w-14 h-14 group bg-lightDark flex items-center justify-center rounded-full z-50"
     >
-      <img class="w-7" src="/assets/bubble.svg" alt="bubble" />
+      <img class="w-7 group-hover:scale-90 transition-all duration-200" src="/assets/bubble.svg" alt="bubble" />
     </button>
   `,
 })

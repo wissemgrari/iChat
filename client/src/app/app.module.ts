@@ -19,7 +19,6 @@ import { ChatListComponent } from './components/chat-list';
 import { ChatMessageComponent } from './components/chat-message';
 import { ChatMessagesComponent } from './components/chat-messages';
 import { Drawer } from './components/drawer/drawer';
-import { DropDownComponent } from './components/dropdown';
 import { FloatButtonComponent } from './components/float-button';
 import { InputComponent } from './components/input';
 import { SearchbarComponent } from './components/searchbar';
@@ -31,6 +30,7 @@ import { NotFound } from './pages/notfound/notfound.component';
 import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
 import { RxStompService } from './rx/rx-stomp.service';
 import { HttpRequestInterceptor } from './utils/http.interceptor';
+import { ModalComponent } from './components/modal/modal';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,6 @@ import { HttpRequestInterceptor } from './utils/http.interceptor';
     ChatItemComponent,
     ChatComponent,
     Drawer,
-    DropDownComponent,
     FloatButtonComponent,
     HomeComponent,
     InputComponent,
@@ -53,6 +52,7 @@ import { HttpRequestInterceptor } from './utils/http.interceptor';
     NotFound,
     SearchbarComponent,
     ClickStopPropagation,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

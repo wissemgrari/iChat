@@ -5,5 +5,5 @@
   </div>
   <searchbar class="mt-10"></searchbar>
   <chat-list [chats]="getChats()" class="mt-10"></chat-list>
-  <float-button></float-button>
+  <float-button (btnClick)="showModal()"></float-button>
 </div>
