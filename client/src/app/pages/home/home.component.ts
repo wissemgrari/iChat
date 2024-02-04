@@ -38,8 +38,8 @@ export class HomeComponent implements OnInit {
   fetchChats() {
     this.homeService.fetchChats().subscribe({
       next: ({ chats }) => {
-        this.chats = chats;
-        this.storageService.setChats(chats);
+        this.chats = chats.filter((chat: Chat) => chat.msgPreview !== null);
+        this.storageService.setChats(this.chats ?? []);
       },
       error: (err) => {
         console.log(err);

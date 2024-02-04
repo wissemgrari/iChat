@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalService } from './modal.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { UserService } from 'src/app/user/user.service';
 import { User } from 'types/global-types';
+import { ModalService } from './modal.service';
 
 @Component({
   selector: 'modal',
@@ -44,10 +46,22 @@ export class ModalComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (this.router.url === '/') {
+          this.fetchUsers();
+        }
+      });
+  }
+
+  fetchUsers() {
     this.userService.getUsers().subscribe({
       next: ({ users }) => (this.users = users),
       error: (error) => console.log(error),

@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { StorageService } from 'src/app/auth/storage.service';
 import { User } from 'types/global-types';
 import { DrawerService } from './drawer.service';
-import { StorageService } from 'src/app/auth/storage.service';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'drawer',

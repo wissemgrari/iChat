@@ -24,6 +24,14 @@ export class ChatService {
     return this.http.get(`${this.API_URL}/messages/${chatID}`, httpOptions);
   }
 
+  createChat(userId: number): Observable<any> {
+    return this.http.post(
+      `${this.API_URL}/chats/create`,
+      { userId },
+      httpOptions
+    );
+  }
+
   sendMessage(request: MessageRequest) {
     this.rxStompService.publish({
       destination: `/app/${request.chatID}/send`,
