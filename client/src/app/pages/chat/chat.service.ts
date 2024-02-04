@@ -12,7 +12,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class ChatService implements OnInit {
+export class ChatService {
   private API_URL = environment.apiUrl;
 
   constructor(
@@ -20,10 +20,16 @@ export class ChatService implements OnInit {
     private rxStompService: RxStompService
   ) {}
 
-  ngOnInit(): void {}
-
   getChatMessages(chatID: string): Observable<any> {
     return this.http.get(`${this.API_URL}/messages/${chatID}`, httpOptions);
+  }
+
+  createChat(userId: number): Observable<any> {
+    return this.http.post(
+      `${this.API_URL}/chats/create`,
+      { userId },
+      httpOptions
+    );
   }
 
   sendMessage(request: MessageRequest) {

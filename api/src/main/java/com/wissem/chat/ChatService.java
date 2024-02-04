@@ -105,9 +105,14 @@ public class ChatService {
       
       // check if there's an existing chat with the user
       if (chatRepository.existsChatByUsers(user.getId(), participant.getId())) {
+        ChatDTO chat = chatRepository.findChatByUsers(user.getId(), participant.getId());
         return ResponseEntity
-          .status(HttpStatus.BAD_REQUEST)
-          .body(ChatErrorResponse.builder().error("The chat is already exist").build());
+          .status(HttpStatus.OK)
+          .body(ChatExistResponse
+            .builder()
+            .message("The chat is already exist")
+            .chat(chat)
+            .build());
       }
       
       // prevent the user to create a chat with him-self

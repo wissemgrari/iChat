@@ -33,6 +33,16 @@ class ChatErrorResponse implements ChatResponse {
   private String error;
 }
 
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+class ChatExistResponse implements ChatResponse {
+  private String message;
+  private ChatDTO chat;
+}
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

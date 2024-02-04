@@ -31,6 +31,7 @@ import { rxStompServiceFactory } from './rx/rx-stomp-service-factory';
 import { RxStompService } from './rx/rx-stomp.service';
 import { HttpRequestInterceptor } from './utils/http.interceptor';
 import { ModalComponent } from './components/modal/modal';
+import { ContactComponent } from './components/contact';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ModalComponent } from './components/modal/modal';
     SearchbarComponent,
     ClickStopPropagation,
     ModalComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
