@@ -12,15 +12,13 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class ChatService implements OnInit {
+export class ChatService {
   private API_URL = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
     private rxStompService: RxStompService
   ) {}
-
-  ngOnInit(): void {}
 
   getChatMessages(chatID: string): Observable<any> {
     return this.http.get(`${this.API_URL}/messages/${chatID}`, httpOptions);

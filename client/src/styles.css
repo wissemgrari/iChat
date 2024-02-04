@@ -35,7 +35,7 @@ app-input.ng-touched.ng-invalid > div {
 }
 
 .modal {
-  @apply bg-lightDark w-[calc(100%_-_8rem)] p-5 rounded-lg transition-all ease-in-out duration-300 z-[999] shadow-lg absolute left-1/2 -translate-x-1/2 top-[150%];
+  @apply absolute left-1/2 -translate-x-1/2 top-[150%] transition-all ease-in-out duration-300;
 }
 .modal-visible {
   @apply top-[20%];

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { User } from 'types/global-types';
 
 @Component({
@@ -9,17 +9,14 @@ import { User } from 'types/global-types';
     >
       <avatar [user]="user" [style]="'square'" />
       <div class="flex flex-col gap-1 text-white">
-        <p class="capitalize text-sm">{{ user.firstName }} {{ user.lastName }}</p>
+        <p class="capitalize text-sm">
+          {{ user.firstName }} {{ user.lastName }}
+        </p>
         <p class="text-xs text-white/70">{{ user.email }}</p>
       </div>
     </div>
   `,
 })
 export class ContactComponent {
-  user: User = {
-    id: 11,
-    email: 'johndoe@gmail.com',
-    firstName: 'john',
-    lastName: 'doe',
-  };
+  @Input() user!: User;
 }
