@@ -40,3 +40,7 @@ app-input.ng-touched.ng-invalid > div {
 .modal-visible {
   @apply top-[20%];
 }
+
+#toast-container .ngx-toastr {
+  @apply !shadow-none !drop-shadow-none !py-5;
+}

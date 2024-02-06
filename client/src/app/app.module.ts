@@ -8,6 +8,8 @@ import {
   withComponentInputBinding,
 } from '@angular/router';
 import { routes } from './routes';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { AvatarComponent } from './components/avatar';
@@ -54,13 +56,15 @@ import { ContactComponent } from './components/contact';
     SearchbarComponent,
     ClickStopPropagation,
     ModalComponent,
-    ContactComponent
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     RouterModule.forRoot(routes),
   ],
   providers: [
