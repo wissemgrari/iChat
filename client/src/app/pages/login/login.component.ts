@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/auth/auth.service';
 import { StorageService } from 'src/app/auth/storage.service';
-import { ToastrService } from 'ngx-toastr';
 import { LoginRequest } from 'types/global-types';
 
 @Component({
@@ -73,4 +73,16 @@ export class LoginComponent implements OnInit {
       },
     });
   }
+
+  getGoogleLoginUrl() {
+    this.authService.getGoogleLoginUrl().subscribe({
+      next: (response) => {
+        window.location.href = response.url;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
+  }
+
 }

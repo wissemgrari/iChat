@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ### Local Configuration ###
-.env
+src/main/resources/.env
 docker-compose.yml

@@ -1,7 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Drawer } from './components/drawer/drawer';
 import { DrawerService } from './components/drawer/drawer.service';
 import { ModalService } from './components/modal/modal.service';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,7 @@ import { ModalService } from './components/modal/modal.service';
     </main>
   `,
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   @ViewChild('drawer') drawer!: Drawer;
   @ViewChild('drawer', { read: ElementRef }) drawerElement!: ElementRef;
   @ViewChild('main', { read: ElementRef }) mainElement!: ElementRef;
@@ -26,8 +28,26 @@ export class AppComponent {
 
   constructor(
     private drawerService: DrawerService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams
+      .subscribe(params => {
+        if (params["code"] !== undefined) {
+          this.authService.getToken(params["code"]).subscribe(result => {
+            if (result === true) {
+              console.log("Logged in successfully")
+            } else {
+              console.log("Failed to log in")
+            }
+          });
+        }
+      }
+    );
+  }
 
   ngAfterViewInit() {
     this.drawerService.setDrawer(

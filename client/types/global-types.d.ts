@@ -5,11 +5,11 @@ export interface LoginRequest {
 
 export interface MessageRequest {
   message: {
-    content: string
-    senderID: number
-    recipientID: number
-  },
-  chatID: string
+    content: string;
+    senderID: number;
+    recipientID: number;
+  };
+  chatID: string;
 }
 
 export interface User {
@@ -25,7 +25,7 @@ export interface Message {
   chat_id: number;
   content: string;
   createdAt: Date;
-  status: 'DELEIVRED' | 'SEEN';
+  status: 'DELIVERED' | 'SEEN';
   senderID: number;
 }
 
@@ -35,4 +35,8 @@ export interface Chat {
   user1: User;
   user2: User;
   msgPreview: Message;
+}
+
+export interface Token {
+  token: string;
 }

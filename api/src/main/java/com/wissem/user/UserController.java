@@ -13,8 +13,8 @@ public class UserController {
 
     private final UserService userService;
     
-    // @desc    Get a list of all chat rooms for the logged-in user
-    // @route   GET /api/v1/chats
+    // @desc    Get a list of all users
+    // @route   GET /api/v1/users
     // @access  Private
     @GetMapping
     public UserResponse getAllUsers(HttpServletRequest request) {
