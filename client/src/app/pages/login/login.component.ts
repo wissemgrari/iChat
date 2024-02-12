@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/auth/auth.service';
 import { StorageService } from 'src/app/auth/storage.service';
@@ -17,10 +17,31 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private storageService: StorageService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['code'] !== undefined) {
+        this.authService
+          .getUserFromOauth2ResourceServer(params['code'])
+          .subscribe((result) => {
+            if (result === true) {
+              console.log('Logged in successfully');
+              this.router.navigate(['/']);
+            } else {
+              console.log('Failed to log in');
+              this.toastr.error('Something went wrong', '', {
+                timeOut: 3000,
+                progressBar: true,
+                progressAnimation: 'decreasing',
+              });
+            }
+          });
+      }
+    });
+
     this.formGroup = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -32,7 +53,7 @@ export class LoginComponent implements OnInit {
       password: new FormControl('', [
         Validators.required,
         Validators.maxLength(25),
-        Validators.minLength(8),
+        Validators.minLength(6),
         Validators.required,
       ]),
     });
@@ -82,7 +103,6 @@ export class LoginComponent implements OnInit {
       error: (err) => {
         console.log(err);
       },
-    })
+    });
   }
-
 }

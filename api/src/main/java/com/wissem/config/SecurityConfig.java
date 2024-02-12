@@ -57,5 +57,4 @@ public class SecurityConfig {
   public OpaqueTokenIntrospector introspector() {
     return new GoogleOpaqueTokenIntrospector(userInfoClient);
   }
-  
 }

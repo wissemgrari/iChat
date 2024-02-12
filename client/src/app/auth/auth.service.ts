@@ -6,6 +6,7 @@ import { StorageService } from './storage.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Token } from '@angular/compiler';
 import { Observable, map } from 'rxjs';
+import { setUserFromOauth2 } from '../utils/userFromOauth2';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -22,7 +23,6 @@ export class AuthService {
 
   private API_URL = environment.apiUrl;
   private user: User | null = this.storageService.getUser();
-  private token: string = '';
 
   getUser(): User | null {
     return this.user;
@@ -44,8 +44,7 @@ export class AuthService {
     return this.http.get(`${this.API_URL}/oauth2/google_url`);
   }
 
-  getToken(code: string): Observable<boolean> {
-    console.log("getToken called")
+  getUserFromOauth2ResourceServer(code: string): Observable<boolean> {
     return this.http
       .get<Token>(`${this.API_URL}/oauth2/callback?code=${code}`, {
         observe: 'response',
@@ -53,9 +52,8 @@ export class AuthService {
       .pipe(
         map((response: HttpResponse<Token>) => {
           if (response.status === 200 && response.body !== null) {
-            this.setUser({id: 1, email: "johdoe@gmail.com", firstName: "John", lastName: "doe"})
-            this.token = response.body.strValue;
-            console.log(response.body)
+            this.setUser(setUserFromOauth2(response.body))
+            this.storageService.saveUser(setUserFromOauth2(response.body));
             return true;
           } else {
             return false;

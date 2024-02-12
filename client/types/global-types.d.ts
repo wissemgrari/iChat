@@ -36,7 +36,3 @@ export interface Chat {
   user2: User;
   msgPreview: Message;
 }
-
-export interface Token {
-  token: string;
-}

@@ -34,19 +34,19 @@ export class AppComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams
-      .subscribe(params => {
-        if (params["code"] !== undefined) {
-          this.authService.getToken(params["code"]).subscribe(result => {
-            if (result === true) {
-              console.log("Logged in successfully")
-            } else {
-              console.log("Failed to log in")
-            }
-          });
-        }
-      }
-    );
+  //   this.route.queryParams
+  //     .subscribe(params => {
+  //       if (params["code"] !== undefined) {
+  //         this.authService.getToken(params["code"]).subscribe(result => {
+  //           if (result === true) {
+  //             console.log("Logged in successfully")
+  //           } else {
+  //             console.log("Failed to log in")
+  //           }
+  //         });
+  //       }
+  //     }
+  //   );
   }
 
   ngAfterViewInit() {

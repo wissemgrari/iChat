@@ -9,14 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class UserInfoDTO {
-  private String sub;
+public class UserInfo {
+  private Long id;
   private String name;
-  private String given_name;
-  private String family_name;
-  private String picture;
   private String email;
-  private boolean email_verified;
-  private String locale;
-  
+  private String picture;
 }

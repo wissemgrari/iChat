@@ -12,9 +12,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class GoogleOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
-  
   private final WebClient userInfoClient;
-  
   
   @Override
   public OAuth2AuthenticatedPrincipal introspect(String token) {
@@ -28,8 +26,10 @@ public class GoogleOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
       .bodyToMono(UserInfo.class)
       .block();
     Map<String, Object> attributes = new HashMap<>();
-    attributes.put("sub", user.sub());
-    attributes.put("name", user.name());
-    return new OAuth2IntrospectionAuthenticatedPrincipal(user.name(), attributes, null);
+    attributes.put("id", user.getId());
+    attributes.put("name", user.getName());
+    attributes.put("email", user.getEmail());
+    attributes.put("picture", user.getPicture());
+    return new OAuth2IntrospectionAuthenticatedPrincipal(user.getName(), attributes, null);
   }
 }

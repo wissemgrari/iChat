@@ -14,11 +14,15 @@ import { AuthService } from '../auth/auth.service';
         <p class="capitalize">
           {{ getParticipant()?.firstName }} {{ getParticipant()?.lastName }}
         </p>
-        <span class="text-sm text-light whitespace-nowrap text-ellipsis" [style.color]="chat?.msgPreview == null ? 'red' : null">{{
-          chat?.msgPreview?.content != null
-            ? chat?.msgPreview?.content
-            : "No messages in the chat"
-        }}</span>
+        <span
+          class="text-sm text-light whitespace-nowrap text-ellipsis"
+          [style.color]="chat?.msgPreview == null ? 'red' : null"
+          >{{
+            chat?.msgPreview?.content != null
+              ? chat?.msgPreview?.content
+              : 'No messages in the chat'
+          }}</span
+        >
       </div>
     </div>
   `,
@@ -34,6 +38,7 @@ export class ChatItemComponent {
       this?.chat?.user1?.id === loggedInUser?.id
         ? this?.chat?.user2
         : this?.chat?.user1;
+    console.log(this.chat);
     return participant ?? null;
   };
 }
