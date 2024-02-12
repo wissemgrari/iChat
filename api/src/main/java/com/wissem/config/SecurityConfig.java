@@ -1,63 +1,46 @@
 package com.wissem.config;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
   
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
-  
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration config = new CorsConfiguration();
-    
-    List<String> allowedOrigins = new ArrayList<>();
-    allowedOrigins.add("http://localhost:4200");
-    
-    config.setAllowCredentials(true);
-    config.setAllowedOrigins(allowedOrigins);
-    config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
-    config.setAllowedMethods(
-      Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
-    
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", config);
-    return source;
-  }
-  
+  private final WebClient userInfoClient;
   
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
-      .cors(Customizer.withDefaults())
       .csrf(AbstractHttpConfigurer::disable)
+      .cors(withDefaults())
+      .exceptionHandling(customizer -> customizer.authenticationEntryPoint(
+        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/v1/auth/**", "/ws/**")
+        .requestMatchers("/api/v1/auth/**", "/api/v1/oauth2/**", "/ws/**")
         .permitAll()
         .anyRequest()
         .authenticated())
+      .oauth2ResourceServer(c -> c.opaqueToken(withDefaults()))
       .sessionManagement(
         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .logout(logout -> logout
@@ -70,4 +53,8 @@ public class SecurityConfig {
       .build();
   }
   
+  @Bean
+  public OpaqueTokenIntrospector introspector() {
+    return new GoogleOpaqueTokenIntrospector(userInfoClient);
+  }
 }

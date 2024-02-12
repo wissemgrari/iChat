@@ -18,6 +18,7 @@ import { User } from 'types/global-types';
         [style.height]="size === 'sm' ? '3rem' : '4rem'"
       />
       <div
+        *ngIf="!user?.imageURL"
         class="w-12 h-12 flex justify-center items-center"
         [style.backgroundColor]="avatarBG"
         [style.borderRadius]="style == 'circle' ? '50%' : '1rem'"

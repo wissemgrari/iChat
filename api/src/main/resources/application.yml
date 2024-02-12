@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/chat
-    username: ${env.POSTGRES_USERNAME}
-    password: ${env.POSTGRES_PASSWORD}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -15,6 +15,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://www.googleapis.com
+          client-id: ${GOOGLE_CLIENT_ID}
+          client-secret: ${GOOGLE_CLIENT_SECRET}
   flyway:
     locations: classpath:db/migration
     enabled: true
@@ -23,3 +30,4 @@ spring:
 # set cookie expiry for 1 day
 jwt:
   cookieExpiry: 86400
+  SECRET_KEY: ${JWT_SECRET_KEY}
