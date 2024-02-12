@@ -38,7 +38,6 @@ export class ChatItemComponent {
       this?.chat?.user1?.id === loggedInUser?.id
         ? this?.chat?.user2
         : this?.chat?.user1;
-    console.log(this.chat);
     return participant ?? null;
   };
 }
