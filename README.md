@@ -5,10 +5,7 @@ Real-Time chat app
 
 
 ## Screenshots
-
-![App Screenshot](https://res.cloudinary.com/dcyl5hb7c/image/upload/v1692545549/Untitled-1_peemlc.png)
-
-
+![mobile.png](https://res.cloudinary.com/dcyl5hb7c/image/upload/v1708217933/ppwg2gf7egf7b08of0xn.png)
 
 ## Author
 
